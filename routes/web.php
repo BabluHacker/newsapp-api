@@ -26,14 +26,6 @@ $router->get('/', function () use ($router) {
 
 $router->group(['prefix' => 'v1'], function ($app) use ($router) {
 
-    $app->post('authorize','UserController@auth'); // no header
-    $app->post('user_form','UserController@createOrUpdate'); // no header
-    $app->get('me','UserController@me');
-
-    $router->group( ['prefix' => 'user' ], function($app)
-    {
-        $app->post('/logout','UserController@logout');
-    });
 
     //Categories
     $router->group( ['prefix' => 'categories' ], function($app)

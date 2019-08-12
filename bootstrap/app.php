@@ -23,6 +23,7 @@ $app = new Laravel\Lumen\Application(
 
 $app->withFacades(true, [
     'Illuminate\Support\Facades\Mail' => 'Mail',
+    'Maatwebsite\Excel\Facades\Excel' => 'Excel',
 ]);
 
  $app->withEloquent();
@@ -93,9 +94,10 @@ $app->singleton(
 |
 */
 /*
- * ----CUSTOM---- Mail Configs HERE ----*/
+ * ----CUSTOM---- Mail & Excel Configs HERE ----*/
 $app->configure('mail');
 $app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
 /*---------------------------------------*/
 $app->router->group([
     'namespace' => 'App\Http\Controllers',

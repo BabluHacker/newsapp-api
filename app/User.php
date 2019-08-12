@@ -17,19 +17,5 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $table="users";
     protected $guarded = ['id','created_at','updated_at'];
 
-    static public function authorizeRules()
-    {
-        return [
-            'token' => 'required'
-        ];
-    }
-    static public function rules()
-    {
-        return [
-            'token' => 'required'
-        ];
-    }
-
-
 
 }
