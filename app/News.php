@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+    protected $table="newses";
     protected $guarded = ['id'];
 
     /*
