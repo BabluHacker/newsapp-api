@@ -36,7 +36,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
     //Newspapers
     $router->group( ['prefix' => 'newspapers' ], function($app)
     {
-
+        $app->get('/','NewspaperController@index');
     });
 
     //tags
@@ -54,7 +54,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
     //Newses
     $router->group( ['prefix' => 'newses' ], function($app)
     {
-
+        $app->get('/','NewsController@index');
     });
     // Mail Sending
     $router->group( ['prefix' => 'send_mail' ], function($app)
