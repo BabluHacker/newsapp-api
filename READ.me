@@ -1,0 +1,7 @@
+##### Authentications #########
+4 types of authentication is there:
+
+1) auth_api_key == {{api-key}} is required to get all the GET access of news, paper, category and tags
+2) auth_dev_superadmin == {{d-access-token}} is required to POST/DELETE/GET/PUT access of categories, tags, papers, category_paper_url, developers
+3) auth_dev_editor     == {{d-access-token}} is required to POST/GET/PUT        access of tags
+4) auth_user           == {{x-access-token}} is required to store user preference & get user specific data in GET  access of news, paper, category and tags

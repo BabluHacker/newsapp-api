@@ -9,11 +9,18 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     protected $table="newses";
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'updated_at', 'created_at'];
 
     /*
      * Relations*/
-
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+    public function newspaper()
+    {
+        return $this->belongsTo('App\Newspaper');
+    }
 
     /*
      * Rules & Messages*/
@@ -33,6 +40,12 @@ class News extends Model
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
 
+        if(isset($params['with'])){
+            $withs = explode(',', $params['with']);
+            foreach ($withs as $with){
+                $query->with($with);
+            }
+        }
 
         if(isset($params['news_type']) and $params['news_type']!="" and $params['news_type']!="null"){
             $query->where('news_type', 'like', $params['news_type']);
@@ -47,9 +60,7 @@ class News extends Model
             $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");
         }
 
-        if(isset($order)){
-            $query->orderBy($order);
-        }
+        $query->orderBy('published_time', 'desc');
 
         $data = $query->paginate($limit);
 

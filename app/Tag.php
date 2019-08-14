@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'updated_at', 'created_at'];
 
     /*
      * Relations*/
@@ -18,7 +18,15 @@ class Tag extends Model
      * Rules & Messages*/
     static public function rules($id=NULL)
     {
-        return [];
+        if ($id==null)
+            return [
+                'name' => 'required|unique:tags,name,',
+                'keywords' => 'required'
+            ];
+        else
+            return [
+                'name' => 'required|unique:tags,name,',$id,
+            ];
     }
 
     static public function messages($id=NULL)

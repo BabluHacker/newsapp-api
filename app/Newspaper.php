@@ -8,19 +8,37 @@ use Illuminate\Database\Eloquent\Model;
 
 class Newspaper extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'updated_at', 'created_at'];
 
     /*
      * Relations*/
     public function url(){
-        return $this->hasMany('App\CategoryPaperUrl');
+        return $this->hasMany('App\CategoryPaperUrl', 'newspaper_id');
+    }
+    public function news(){
+        return $this->hasMany('App\News', 'newspaper_id');
     }
 
     /*
      * Rules & Messages*/
     static public function rules($id=NULL)
     {
-        return [];
+        if ($id == null)
+            return [
+                'alias_name'    => 'required|unique:newspapers,alias_name,',
+                'name'          => 'required',
+                'bn_name'          => 'required',
+                'logo_square'          => 'required',
+                'logo_rectangle'          => 'required',
+            ];
+        else
+            return [
+                'alias_name'    => 'required|unique:newspapers,alias_name,'.$id,
+                'name'          => 'required',
+                'bn_name'          => 'required',
+                'logo_square'          => 'required',
+                'logo_rectangle'          => 'required',
+            ];
     }
 
     static public function messages($id=NULL)

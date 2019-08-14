@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryPaperUrl extends Model
 {
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'updated_at', 'created_at'];
 
     /*
      * Relations*/
@@ -25,7 +25,20 @@ class CategoryPaperUrl extends Model
      * Rules & Messages*/
     static public function rules($id=NULL)
     {
-        return [];
+        if ($id == null) {
+            return [
+                'url'   => 'required|unique:category_paper_urls,url',
+                'category_id' => 'required',
+                'newspaper_id' => 'required',
+            ];
+        }
+        else{
+            return [
+                'url'   => 'required|unique:category_paper_urls,url,'.$id,
+                'category_id' => 'required',
+                'newspaper_id' => 'required',
+            ];
+        }
     }
 
     static public function messages($id=NULL)
@@ -38,6 +51,13 @@ class CategoryPaperUrl extends Model
         $params = $request->all();
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? CategoryPaperUrl::select(explode(",", $params['fields'])):CategoryPaperUrl::select();
+
+        if(isset($params['with'])){
+            $withs = explode(',', $params['with']);
+            foreach ($withs as $with){
+                $query->with($with);
+            }
+        }
 
         if(isset($params['newspaper_id']) and $params['newspaper_id']!="" and $params['newspaper_id']!="null"){
             $query->where('newspaper_id', 'like', $params['newspaper_id']);

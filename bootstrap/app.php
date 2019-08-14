@@ -66,6 +66,10 @@ $app->singleton(
 
  $app->routeMiddleware([
      'auth' => App\Http\Middleware\Authenticate::class,
+     'auth_api_key' => App\Http\Middleware\AuthApiKey::class,
+     'auth_user' => App\Http\Middleware\AuthUser::class,
+     'auth_dev_superadmin' => App\Http\Middleware\AuthDevUptoSuperAdmin::class,
+     'auth_dev_editor' => App\Http\Middleware\AuthDevUptoEditor::class,
  ]);
 
 /*
@@ -96,8 +100,10 @@ $app->singleton(
 /*
  * ----CUSTOM---- Mail & Excel Configs HERE ----*/
 $app->configure('mail');
+$app->configure('swagger-lume');
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->register(\SwaggerLume\ServiceProvider::class);
 /*---------------------------------------*/
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
