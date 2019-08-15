@@ -112,17 +112,13 @@ class DeveloperController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *    path="/developers",
-     *    summary="Create a developer",
-     *    operationId="createDeveloper",
-     *    tags={"developers"},
-     *    @OA\Response(response=201, description="Null response"),
-     *    @OA\Response(
-     *        response="default",
-     *        description="unexpected error",
-     *        @OA\Schema(ref="#/components/schemas/Error")
-     *    )
+     * @OA\Info(title="My First API", version="0.1")
+     */
+
+    /**
+     * @OA\Get(
+     *     path="/api/resource.json",
+     *     @OA\Response(response="200", description="An example resource")
      * )
      */
     public function create(Request $request)

@@ -59,7 +59,6 @@ class News extends Model
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
             $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");
         }
-
         $query->orderBy('published_time', 'desc');
 
         $data = $query->paginate($limit);
