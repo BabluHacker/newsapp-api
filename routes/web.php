@@ -17,7 +17,7 @@ $router->get('/', function () use ($router) {
     //return $router->app->version();
     $response = [
         'status' => 1,
-        'data' => "Technocrats NewsBoard App RESTful API"
+        'data' => "Technocrats NewsBoard App RESTful API--- v2"
     ];
 
     return response()->json($response, 200, [], JSON_PRETTY_PRINT);
