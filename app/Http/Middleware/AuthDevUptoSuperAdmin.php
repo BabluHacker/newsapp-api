@@ -3,7 +3,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Developers;
+use App\Developer;
 use App\TokenDevAccess;
 use Closure;
 
@@ -27,7 +27,7 @@ class AuthDevUptoSuperAdmin
         $dev_token  = TokenDevAccess::where('access_token', 'like', $d_access_token)
             ->where('expires_at', '>', time())->first();
         if($dev_token) {
-            $model = Developers::where('id', 'like', $dev_token->developer_id)
+            $model = Developer::where('id', 'like', $dev_token->developer_id)
                 ->where('type', 'like', 'super_admin')->first();
             if($model) return true;
         }

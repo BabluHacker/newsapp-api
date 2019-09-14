@@ -25,13 +25,20 @@ class AuthApiKey
         if($debug) {
             $api_key = TokenApiKey::where('api_key', 'like', $api_key)
                 ->where('debug', 'like', 'true')->first();
+
         }
         else{
             $api_key = TokenApiKey::where('api_key', 'like', $api_key)
-                ->where('debug', 'like', 'false')->first()->increment('total_call');
+                ->where('debug', 'like', 'false')
+                ->first();
+            if($api_key->pricing_plan_id == 1){
+                if($api_key->next_call > time()) return false;
+                $api_key->next_call = time() + env('API_CALL_GAP');
+            }
         }
         if($api_key) {
-
+            $api_key->increment('total_call');
+            $api_key->save();
             return true;
         }
         return false;

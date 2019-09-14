@@ -70,6 +70,8 @@ $app->singleton(
      'auth_user' => App\Http\Middleware\AuthUser::class,
      'auth_dev_superadmin' => App\Http\Middleware\AuthDevUptoSuperAdmin::class,
      'auth_dev_editor' => App\Http\Middleware\AuthDevUptoEditor::class,
+     'auth_client' => App\Http\Middleware\AuthClient::class,
+     'auth_client_not_confirmed' => App\Http\Middleware\AuthClientNotConfirmed::class,
  ]);
 
 /*
@@ -97,13 +99,12 @@ $app->singleton(
 | can respond to, as well as the controllers that may handle them.
 |
 */
+
 /*
  * ----CUSTOM---- Mail & Excel Configs HERE ----*/
 $app->configure('mail');
-$app->configure('swagger-lume');
 $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
-$app->register(\SwaggerLume\ServiceProvider::class);
 /*---------------------------------------*/
 $app->router->group([
     'namespace' => 'App\Http\Controllers',

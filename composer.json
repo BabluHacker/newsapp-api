@@ -10,7 +10,8 @@
         "illuminate/mail": "^5.8",
         "laravel/lumen-framework": "5.8.*",
         "maatwebsite/excel": "~2.1.0",
-        "nesbot/carbon": "~1.0"
+        "nesbot/carbon": "~1.0",
+        "ext-http": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

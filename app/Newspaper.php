@@ -28,16 +28,16 @@ class Newspaper extends Model
                 'alias_name'    => 'required|unique:newspapers,alias_name,',
                 'name'          => 'required',
                 'bn_name'          => 'required',
-                'logo_square'          => 'required',
-                'logo_rectangle'          => 'required',
+                /*'logo_square'          => 'required',
+                'logo_rectangle'          => 'required',*/
             ];
         else
             return [
                 'alias_name'    => 'required|unique:newspapers,alias_name,'.$id,
                 'name'          => 'required',
                 'bn_name'          => 'required',
-                'logo_square'          => 'required',
-                'logo_rectangle'          => 'required',
+                /*'logo_square'          => 'required',
+                'logo_rectangle'          => 'required',*/
             ];
     }
 
@@ -56,9 +56,19 @@ class Newspaper extends Model
         if(isset($params['name']) and $params['name']!="" and $params['name']!="null"){
             $query->where('name', 'like', $params['name']);
         }
+        if(isset($params['bn_name']) and $params['bn_name']!="" and $params['bn_name']!="null"){
+            $query->where('bn_name', 'like', $params['bn_name']);
+        }
         if(isset($params['alias_name']) and $params['alias_name']!="" and $params['alias_name']!="null"){
             $query->where('alias_name', 'like', $params['alias_name']);
         }
+        if(isset($params['logo_square']) and $params['logo_square']!="" and $params['logo_square']!="null"){
+            $query->where('logo_square', 'like', $params['logo_square']);
+        }
+        if(isset($params['logo_rectangle']) and $params['logo_rectangle']!="" and $params['logo_rectangle']!="null"){
+            $query->where('logo_rectangle', 'like', $params['logo_rectangle']);
+        }
+
 
         if(isset($order)){
             $query->orderBy($order);

@@ -6,33 +6,36 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TokenApiKey extends Model
+class PricingPlan extends Model
 {
-
-    protected $table="token_api_keys";
     protected $guarded = ['id', 'updated_at', 'created_at'];
 
-    public static function rules($type=null)
+
+    /*
+     * Rules & Messages*/
+    static public function rules($id=NULL)
     {
-        if($type == 'change_plan')
+        if ($id == null)
             return [
-                'approved' => 'required|in:true,false'
+
             ];
         else
             return [
-                'debug' => 'required|in:true,false'
+
             ];
     }
+
+    static public function messages($id=NULL)
+    {
+        return [];
+    }
+
     static public function search($request)
     {
         $params = $request->all();
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
-        $query  = isset($params['fields'])? Newspaper::select(explode(",", $params['fields'])):Newspaper::select();
+        $query  = isset($params['fields'])? PricingPlan::select(explode(",", $params['fields'])):PricingPlan::select();
 
-
-        if(isset($params['debug']) and $params['debug']!="" and $params['debug']!="null"){
-            $query->where('debug', 'like', $params['debug']);
-        }
 
         if(isset($order)){
             $query->orderBy($order);
@@ -45,6 +48,4 @@ class TokenApiKey extends Model
             'data' => $data
         ];
     }
-
-
 }

@@ -3,7 +3,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Developers;
+use App\Developer;
 use App\TokenDevAccess;
 use Closure;
 
@@ -27,7 +27,7 @@ class AuthDevUptoEditor
         $dev_token  = TokenDevAccess::where('access_token', 'like', $d_access_token)
                                 ->where('expires_at', '>', time())->first();
         if($dev_token) {
-            $model = Developers::where('id', 'like', $dev_token->developer_id)
+            $model = Developer::where('id', 'like', $dev_token->developer_id)
                             ->where(function ($query) {
                                 $query->where('type', 'like', 'editor')
                                     ->orWhere('type', 'like', 'super_admin');

@@ -4,10 +4,11 @@
 namespace App\Http\Controllers;
 
 
-use App\Developers;
+use App\Developer;
 use App\TokenDevAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 
 class DeveloperController extends Controller
 {
@@ -21,8 +22,8 @@ class DeveloperController extends Controller
         ]]);
     }
 
-    public function auth(Request $request){
-        if ($model = Developers::authorize($request->all())) {
+    public function auth(Request $request){ // no header
+        if ($model = Developer::authorize($request->all())) {
 
             $auth_code = $this->createAccessToken($model->id);
 
@@ -48,7 +49,7 @@ class DeveloperController extends Controller
         $headers = $request->headers->all();
         $d_access_token = $headers['d-access-token'][0];
         $token = TokenDevAccess::where('access_token', 'like', $d_access_token)->first();
-        $devModel = Developers::find($token->developer_id)->toArray();
+        $devModel = Developer::find($token->developer_id)->toArray();
         unset($devModel['password']);
         $response = [
             'status' => 1,
@@ -102,7 +103,7 @@ class DeveloperController extends Controller
 
     public function index(Request $request)
     {
-        $response = Developers::search($request);
+        $response = Developer::search($request);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
     public function view(Request $request, $id)
@@ -111,23 +112,13 @@ class DeveloperController extends Controller
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
     }
 
-    /**
-     * @OA\Info(title="My First API", version="0.1")
-     */
-
-    /**
-     * @OA\Get(
-     *     path="/api/resource.json",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
-     */
     public function create(Request $request)
     {
-        $this->validate($request, Developers::rules() );
+        $this->validate($request, Developer::rules() );
 
         $attributes = $request->all();
         $attributes['password'] = Hash::make($attributes['password']);
-        $model = Developers::create($attributes);
+        $model = Developer::create($attributes);
 
         $response = [
             'status' => 1,
@@ -139,11 +130,14 @@ class DeveloperController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, Developers::rules($id) );
+
+        $this->validate($request, Developer::rules($id) );
 
         $data_to_insert = $request->all();
-        unset($data_to_insert['password']);
-        $model = Developers::where("id", 'like', $id)
+        /**
+        Password also can be changed by super admin*/
+        $data_to_insert['password'] = Hash::make($data_to_insert['password']);
+        $model = Developer::where("id", 'like', $id)
             ->update($data_to_insert);
 
         $response = [
@@ -180,7 +174,7 @@ class DeveloperController extends Controller
 
     public function findModel(Request $request, $id)
     {
-        $model = Developers::find($id);
+        $model = Developer::find($id);
         if (!$model) {
             $response = [
                 'status' => 0,
@@ -193,6 +187,7 @@ class DeveloperController extends Controller
     }
 
     public function createAccessToken($dev_id){
+        $this->deleteOtherAccessToken($dev_id);
         $model             = new TokenDevAccess();
         $model->access_token      = md5(uniqid());
         $model->expires_at      = time() + env('ACCESS_TOKEN_EXP');
@@ -200,6 +195,9 @@ class DeveloperController extends Controller
 
         $model->save();
         return ($model);
+    }
+    private function deleteOtherAccessToken($dev_id){
+        TokenDevAccess::where('developer_id', 'like', $dev_id)->delete();
     }
     public function refreshAccesstoken($token)
     {

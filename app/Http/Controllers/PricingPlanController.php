@@ -4,26 +4,21 @@
 namespace App\Http\Controllers;
 
 
-use App\Tag;
+use App\PricingPlan;
 use Illuminate\Http\Request;
 
-class TagController extends Controller
+class PricingPlanController extends Controller
 {
-    public function __construct(Request $request)
+    public function __construct()
     {
-        $this->middleware('auth_api_key', ['only' => [
-            'index', 'view'
-        ]]);
-        $this->middleware('auth_dev_editor', ['only' => [
-            'create', 'update', 'delete_request'
-        ]]);
+
         $this->middleware('auth_dev_superadmin', ['only' => [
-            'delete'
+            'create', 'update', 'delete'
         ]]);
     }
     public function index(Request $request)
     {
-        $response = Tag::search($request);
+        $response = PricingPlan::search($request);
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
     public function view(Request $request, $id)
@@ -36,10 +31,10 @@ class TagController extends Controller
 
     public function create(Request $request)
     {
-        $this->validate($request, Tag::rules() );
+        $this->validate($request, PricingPlan::rules() );
         $data_to_insert = $request->all();
         /* todo here logics*/
-        $model = Tag::create($data_to_insert);
+        $model = PricingPlan::create($data_to_insert);
 
         $response = [
             'status' => 1,
@@ -51,10 +46,10 @@ class TagController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, Tag::rules($id) );
+        $this->validate($request, PricingPlan::rules($id) );
 
         $data_to_insert = $request->all();
-        $model = Tag::where("id", $id)
+        $model = PricingPlan::where("id", $id)
             ->update($data_to_insert);
 
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
@@ -67,25 +62,6 @@ class TagController extends Controller
         $response = [
             'status' => 1,
             'message'=>'Removed successfully.'
-        ];
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
-    }
-
-    public function delete_request(Request $request, $id){
-        $model = $this->findModel($request, $id);
-        $model->update(['delete_request'=>'True']);
-        $response = [
-            'status' => 1,
-            'message'=>'Delete Request Add success'
-        ];
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
-    }
-    public function reset_delete_request(Request $request, $id){
-        $model = $this->findModel($request, $id);
-        $model->update(['delete_request'=>'False']);
-        $response = [
-            'status' => 1,
-            'message'=>'Delete Request Reset success'
         ];
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
@@ -106,7 +82,7 @@ class TagController extends Controller
 
     public function findModel(Request $request, $id)
     {
-        $model = Tag::find($id);
+        $model = PricingPlan::find($id);
         if (!$model) {
             $response = [
                 'status' => 0,
@@ -115,6 +91,7 @@ class TagController extends Controller
             response()->json($response, 400, [], JSON_PRETTY_PRINT)->send();
             die;
         }
+
         return $model;
     }
 }

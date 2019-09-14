@@ -26,6 +26,7 @@ class Tag extends Model
         else
             return [
                 'name' => 'required|unique:tags,name,',$id,
+                'keywords' => 'required'
             ];
     }
 
@@ -43,6 +44,9 @@ class Tag extends Model
 
         if(isset($params['name']) and $params['name']!="" and $params['name']!="null"){
             $query->where('name', 'like', $params['name']);
+        }
+        if(isset($params['delete_request']) and $params['delete_request']!="" and $params['delete_request']!="null"){
+            $query->where('delete_request', 'like', $params['delete_request']);
         }
         if(isset($params['keyword']) and $params['keyword']!="" and $params['keyword']!="null"){
             $query->whereRaw("FIND_IN_SET('".$params['keyword']."', keywords)");

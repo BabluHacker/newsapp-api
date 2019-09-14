@@ -6,13 +6,18 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class MyEmail extends Mailable {
+class emailConfirm extends Mailable {
 
     use Queueable,
         SerializesModels;
 
+    public function __construct(array $data)
+    {
+        $this->data = $data;
+    }
     //build the message.
     public function build() {
-        return $this->view('my-email');
+        return $this->view('mail-confirm')
+            ->with($this->data);
     }
 }

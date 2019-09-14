@@ -8,7 +8,6 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-
 class UserController extends Controller
 {
 
@@ -25,7 +24,7 @@ class UserController extends Controller
     public function auth(Request $request)
     {
         /*
-         * pass param : token*/
+         * pass param : fb kit token*/
         /*
          * verify :
          * 1. if token exists in table-> send user_details
@@ -89,7 +88,7 @@ class UserController extends Controller
     public function createOrUpdate(Request $request)
     {
         /*
-         * params : token, {USER_DETAIL FORM}*/
+         * params : fb kit token, {USER_DETAIL FORM}*/
         /*
          * verify :
          *  1. check valid access_token or not (graph api call)
