@@ -27,7 +27,7 @@ class TokenApiKey extends Model
     {
         $params = $request->all();
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
-        $query  = isset($params['fields'])? Newspaper::select(explode(",", $params['fields'])):Newspaper::select();
+        $query  = isset($params['fields'])? TokenApiKey::select(explode(",", $params['fields'])):TokenApiKey::select();
 
 
         if(isset($params['debug']) and $params['debug']!="" and $params['debug']!="null"){
