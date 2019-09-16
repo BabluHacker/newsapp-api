@@ -324,7 +324,7 @@ class ClientController extends Controller
 
         $modelApi->requested_pricing_plan = $request->input('pricing_plan_id');
 
-        if($modelClient->save()){
+        if($modelApi->save()){
             $response = [
                 'status' => 1,
                 'data' => "success in request"
