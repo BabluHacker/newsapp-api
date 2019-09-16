@@ -31,9 +31,11 @@ class AuthApiKey
             $api_key = TokenApiKey::where('api_key', 'like', $api_key)
                 ->where('debug', 'like', 'false')
                 ->first();
-            if($api_key->pricing_plan_id == 1){
-                if($api_key->next_call > time()) return false;
-                $api_key->next_call = time() + env('API_CALL_GAP');
+            if($api_key) {
+                if ($api_key->pricing_plan_id == 1) {
+                    if ($api_key->next_call > time()) return false;
+                    $api_key->next_call = time() + env('API_CALL_GAP');
+                }
             }
         }
         if($api_key) {

@@ -25,7 +25,7 @@ class ClientController extends Controller
             'me', 'update_email', 'update_password', 'update_profile',
             'delete', 'signout',
             'get_own_key', 'api_key_details', 'request_change_plan',
-            'generate_refresh_own_key'
+            'generate_refresh_own_key', 'deleteApiKey'
 
         ]]);
 
@@ -227,20 +227,7 @@ class ClientController extends Controller
         ];
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
-    // get identity from c_access_token
-    public function deleteApiKey(Request $request){
-        $headers = $request->headers->all();
-        $c_access_token = $headers['c-access-token'][0];
-        $this->validate($request, Client::pass_change_rules() );
-        $attributes = $request->all();
-        $clientModel = $this->findModelFromAccessToken($c_access_token);
-        TokenApiKey::where('client_id', 'like', $clientModel->id)->delete();
-        $response = [
-            'status' => 1,
-            'message' => "Success delete api key"
-        ];
-        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
-    }
+
     // get identity from c_access_token
     public function signout(Request $request){
         $headers = $request->headers->all();
@@ -348,6 +335,18 @@ class ClientController extends Controller
         $response = [
             'status' => 1,
             'data' => $model
+        ];
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+    }
+    // get identity from c_access_token
+    public function deleteApiKey(Request $request){
+        $headers = $request->headers->all();
+        $c_access_token = $headers['c-access-token'][0];
+        $clientModel = $this->findModelFromAccessToken($c_access_token);
+        TokenApiKey::where('client_id', 'like', $clientModel->id)->delete();
+        $response = [
+            'status' => 1,
+            'message' => "Success delete api key"
         ];
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
