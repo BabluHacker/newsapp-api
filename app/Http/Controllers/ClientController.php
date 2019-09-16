@@ -343,7 +343,14 @@ class ClientController extends Controller
         $headers = $request->headers->all();
         $c_access_token = $headers['c-access-token'][0];
         $clientModel = $this->findModelFromAccessToken($c_access_token);
-        TokenApiKey::where('client_id', 'like', $clientModel->id)->delete();
+        $model = TokenApiKey::where('client_id', 'like', $clientModel->id)->delete();
+        if(!$model){
+            $response = [
+                'status' => 0,
+                'message' => "No Api Key exists"
+            ];
+            return response()->json($response, 400, [], JSON_PRETTY_PRINT);
+        }
         $response = [
             'status' => 1,
             'message' => "Success delete api key"
