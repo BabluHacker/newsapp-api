@@ -38,7 +38,7 @@ class TokenApiKeyController extends Controller
 
     public function view(Request $request, $id)
     {
-        $model = $this->findModel($request, $id);
+        $model = $this->findModel($id);
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
     }
 
@@ -82,7 +82,6 @@ class TokenApiKeyController extends Controller
             response()->json($response, 400, [], JSON_PRETTY_PRINT)->send();
             die;
         }
-
         return $model;
     }
 
