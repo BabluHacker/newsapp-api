@@ -109,7 +109,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         {
             $app->get('/','ClientController@get_own_key'); // only to get api_key string
             $app->get('/detail','ClientController@api_key_details'); // except api_key itself
-            $app->get('/request_change_plan','ClientController@request_change_plan'); // (param: pricing_plan_id)todo fill up a form and update it to token_api_key ..
+            $app->post('/request_change_plan','ClientController@request_change_plan'); // (param: pricing_plan_id)todo fill up a form and update it to token_api_key ..
             $app->post('/generate_or_refresh','ClientController@generate_refresh_own_key'); // generate new one if not exists if exists then refresh it...
             $app->post('/delete','ClientController@deleteApiKey'); //auth_client
 

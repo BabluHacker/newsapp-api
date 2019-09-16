@@ -20,7 +20,7 @@ class TokenApiKeyController extends Controller
         $this->middleware('auth_dev_superadmin');
     }
 
-    //todo Only Control for super admin
+    // Only Control for super admin
     /**
      * 1. index
      * 2. view
@@ -54,8 +54,6 @@ class TokenApiKeyController extends Controller
                 $data_mail['message'] = 'Congratulations! Your Pricing Plan has been changed';
                 Mail::to($model->email)->send(new notifyMail($data_mail));
             }
-
-
             return response()->json('success', 200, [], JSON_PRETTY_PRINT);
         }
         else{

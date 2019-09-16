@@ -306,8 +306,37 @@ class ClientController extends Controller
     public function request_change_plan(Request $request){
         $this->validate($request, ['pricing_plan_id'=>'required'] );
         $modelClient = $this->findModelFromAccessToken($request->headers->all()['c-access-token'][0]);
-        $modelClient->requested_pricing_plan = $request->input('pricing_plan_id');
-        $modelClient->save();
+        if(!$modelClient){
+            $response = [
+                'status' => 0,
+                'errors' => "Client is invalid"
+            ];
+            return response()->json($response, 400, [], JSON_PRETTY_PRINT);
+        }
+        $modelApi = TokenApiKey::where('client_id', 'like', $modelClient->id);
+        if(!$modelApi){
+            $response = [
+                'status' => 0,
+                'errors' => "No Api Key Registered"
+            ];
+            return response()->json($response, 400, [], JSON_PRETTY_PRINT);
+        }
+
+        $modelApi->requested_pricing_plan = $request->input('pricing_plan_id');
+
+        if($modelClient->save()){
+            $response = [
+                'status' => 1,
+                'data' => "success in request"
+            ];
+            return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+        }
+        $response = [
+            'status' => 0,
+            'data' => "Error in request"
+        ];
+        return response()->json($response, 400, [], JSON_PRETTY_PRINT);
+
     }
     // get identity from c_access_token
     public function generate_refresh_own_key(Request $request){
