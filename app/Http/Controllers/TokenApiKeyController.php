@@ -29,48 +29,7 @@ class TokenApiKeyController extends Controller
      * */
 
 
-    /*
-     * For getting Client's request about changing plan*/
-    public function requests(Request $request){
-        $modelRequ = TokenApiKey::select('id', 'pricing_plan_id', 'requested_pricing_plan')
-            ->where('debug', 'like', 'false')->paginate(10);
 
-        return response()->json($modelRequ, 200, [], JSON_PRETTY_PRINT);
-    }
-    /*
-     * For executing Client's request about changing plan*/
-    public function change_plan(Request $request, $id){ // approved => true/false
-        $this->validate($request, TokenApiKey::rules('change_plan') );
-        $model = $this->findModel( $id);
-        if($request->input('approved') == 'true') {
-            $model->pricing_plan_id = $model->requested_pricing_plan;
-            $model->requested_pricing_plan = 0;
-            $modelClient = Client::find($model->client_id);
-            $model->save();
-            $data_mail = [];
-            $data_mail['first_name'] = $modelClient->first_name;
-            $data_mail['last_name'] = $modelClient->last_name;
-            if($modelClient){
-                $data_mail['message'] = 'Congratulations! Your Pricing Plan has been changed';
-                Mail::to($model->email)->send(new notifyMail($data_mail));
-            }
-            return response()->json('success', 200, [], JSON_PRETTY_PRINT);
-        }
-        else{
-
-            $model->requested_pricing_plan = 0;
-            $modelClient = Client::find($model->client_id);
-            $model->save();
-            $data_mail = [];
-            $data_mail['first_name'] = $modelClient->first_name;
-            $data_mail['last_name'] = $modelClient->last_name;
-            if($modelClient){
-                $data_mail['message'] = 'Sorry! Your Pricing Plan can\'t be been changed';
-                Mail::to($model->email)->send(new notifyMail($data_mail));
-            }
-        }
-        return response()->json('success', 200, [], JSON_PRETTY_PRINT);
-    }
     public function index(Request $request)
     {
         $response = TokenApiKey::search($request);
@@ -127,5 +86,47 @@ class TokenApiKeyController extends Controller
         return $model;
     }
 
+    /*
+         * For getting Client's request about changing plan*/
+    public function requests(Request $request){
+        $modelRequ = TokenApiKey::select('id', 'pricing_plan_id', 'requested_pricing_plan')
+            ->where('debug', 'like', 'false')
+            ->where('requested_pricing_plan', 'not like', 0)->paginate(10);
 
+        return response()->json($modelRequ, 200, [], JSON_PRETTY_PRINT);
+    }
+    /*
+     * For executing Client's request about changing plan*/
+    public function change_plan(Request $request, $id){ // approved => true/false
+        $this->validate($request, TokenApiKey::rules('change_plan') );
+        $model = $this->findModel( $id);
+        if($request->input('approved') == 'true') {
+            $model->pricing_plan_id = $model->requested_pricing_plan;
+            $model->requested_pricing_plan = 0;
+            $modelClient = Client::find($model->client_id);
+            $model->save();
+            $data_mail = [];
+            $data_mail['first_name'] = $modelClient->first_name;
+            $data_mail['last_name'] = $modelClient->last_name;
+            if($modelClient){
+                $data_mail['message'] = 'Congratulations! Your Pricing Plan has been changed';
+                Mail::to($model->email)->send(new notifyMail($data_mail));
+            }
+            return response()->json('success', 200, [], JSON_PRETTY_PRINT);
+        }
+        else{
+
+            $model->requested_pricing_plan = 0;
+            $modelClient = Client::find($model->client_id);
+            $model->save();
+            $data_mail = [];
+            $data_mail['first_name'] = $modelClient->first_name;
+            $data_mail['last_name'] = $modelClient->last_name;
+            if($modelClient){
+                $data_mail['message'] = 'Sorry! Your Pricing Plan can\'t be been changed';
+                Mail::to($model->email)->send(new notifyMail($data_mail));
+            }
+        }
+        return response()->json('success', 200, [], JSON_PRETTY_PRINT);
+    }
 }
