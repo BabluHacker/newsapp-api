@@ -15,7 +15,7 @@ class DeveloperController extends Controller
     public function __construct()
     {
         $this->middleware('auth_dev_superadmin', ['only' => [
-            'index', 'view', 'create', 'update', 'delete'
+            'index', 'view', 'update', 'delete'
         ]]);
         $this->middleware('auth_dev_editor', ['only' => [
             'me', 'logout', 'refresh'
