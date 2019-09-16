@@ -37,7 +37,7 @@ class News extends Model
     static public function search($request)
     {
         $params = $request->all();
-        $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
+        if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
 
