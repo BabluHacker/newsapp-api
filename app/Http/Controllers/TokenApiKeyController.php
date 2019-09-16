@@ -99,6 +99,14 @@ class TokenApiKeyController extends Controller
     public function change_plan(Request $request, $id){ // approved => true/false
         $this->validate($request, TokenApiKey::rules('change_plan') );
         $model = $this->findModel( $id);
+        if($model->requested_pricing_plan == 0){
+            $response = [
+                'status' => 0,
+                'errors' => "Invalid Change Plan Request"
+            ];
+            response()->json($response, 400, [], JSON_PRETTY_PRINT)->send();
+            die;
+        }
         if($request->input('approved') == 'true') {
             $model->pricing_plan_id = $model->requested_pricing_plan;
             $model->requested_pricing_plan = 0;
