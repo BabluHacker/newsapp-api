@@ -103,13 +103,14 @@ class TokenApiKeyController extends Controller
             $model->pricing_plan_id = $model->requested_pricing_plan;
             $model->requested_pricing_plan = 0;
             $modelClient = Client::find($model->client_id);
-            $model->save();
+
             $data_mail = [];
             $data_mail['first_name'] = $modelClient->first_name;
             $data_mail['last_name'] = $modelClient->last_name;
             if($modelClient){
                 $data_mail['message'] = 'Congratulations! Your Pricing Plan has been changed';
                 Mail::to($model->email)->send(new notifyMail($data_mail));
+                $model->save();
             }
             return response()->json('success', 200, [], JSON_PRETTY_PRINT);
         }
@@ -117,13 +118,14 @@ class TokenApiKeyController extends Controller
 
             $model->requested_pricing_plan = 0;
             $modelClient = Client::find($model->client_id);
-            $model->save();
+
             $data_mail = [];
             $data_mail['first_name'] = $modelClient->first_name;
             $data_mail['last_name'] = $modelClient->last_name;
             if($modelClient){
                 $data_mail['message'] = 'Sorry! Your Pricing Plan can\'t be been changed';
                 Mail::to($model->email)->send(new notifyMail($data_mail));
+                $model->save();
             }
         }
         return response()->json('success', 200, [], JSON_PRETTY_PRINT);
