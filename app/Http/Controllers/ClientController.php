@@ -313,7 +313,7 @@ class ClientController extends Controller
             ];
             return response()->json($response, 400, [], JSON_PRETTY_PRINT);
         }
-        $modelApi = TokenApiKey::where('client_id', 'like', $modelClient->id);
+        $modelApi = TokenApiKey::where('client_id', 'like', $modelClient->id)->first();
         if(!$modelApi){
             $response = [
                 'status' => 0,
