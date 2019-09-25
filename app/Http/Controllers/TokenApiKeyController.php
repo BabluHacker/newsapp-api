@@ -50,6 +50,7 @@ class TokenApiKeyController extends Controller
         $data_to_insert = [];
         $data_to_insert['debug'] = $request->input('debug');
         $data_to_insert['api_key'] = md5(uniqid());
+
         $model = TokenApiKey::create($data_to_insert);
 
         $response = [
@@ -58,7 +59,6 @@ class TokenApiKeyController extends Controller
         ];
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
-
 
     public function delete(Request $request, $id)
     {

@@ -152,6 +152,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/','TagController@index');
         $app->get('/{id}','TagController@view');
         $app->post('/','TagController@create');
+        $app->post('/search', 'TagController@search');  // keywords
         $app->put('/{id}','TagController@update');
         $app->delete('/{id}','TagController@delete');
         $app->post('/del_request/{id}','TagController@delete_request');
@@ -175,6 +176,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/{id}','NewsController@view');
         $app->put('/{id}','NewsController@update');
         $app->delete('/{id}','NewsController@delete');
+        $app->post('/search', 'NewsController@search'); // date-range, keywords, newspaper_id, category_id, tag_ids
     });
 
 

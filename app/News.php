@@ -40,7 +40,6 @@ class News extends Model
         if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
-
         if(isset($params['with'])){
             $withs = explode(',', $params['with']);
             foreach ($withs as $with){
@@ -55,7 +54,12 @@ class News extends Model
             $query->where('newspaper_id', 'like', $params['newspaper_id']);
         }
         if(isset($params['category_id']) and $params['category_id']!="" and $params['category_id']!="null"){
-            $query->where('category_id', 'like', $params['category_id']);
+            if ($params['category_id'] == 1){ // Top Picks
+
+            }
+            else {
+                $query->where('category_id', 'like', $params['category_id']);
+            }
         }
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
             $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");

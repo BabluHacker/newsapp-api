@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 
+use App\ApiCallCount;
 use App\Client;
 use App\Mail\emailConfirm;
 use App\Mail\notifyMail;
@@ -125,6 +126,9 @@ class ClientController extends Controller
         $model->is_email_confirmed = 'True';
         //logout all session
         $this->deleteOtherAccessToken($model->id);
+        // generate api-key against this client
+        self::generate_or_refresh_api_key($model->id);
+
         $model->save();
         // todo redirect to confirmed page
         return response()->json('success', 200, [], JSON_PRETTY_PRINT);
@@ -275,7 +279,7 @@ class ClientController extends Controller
     public function api_key_details(Request $request){
         $model = $this->findModelFromAccessToken($request->headers->all()['c-access-token'][0]);
         $apiKeyModel = TokenApiKey::where('client_id', 'like', $model->id)
-            ->select('pricing_plan_id', 'requested_pricing_plan', 'total_call', 'created_at')->first();
+            ->select('id','pricing_plan_id', 'requested_pricing_plan', 'total_call', 'created_at')->first();
         if(!$apiKeyModel){
             $response = [
                 'status' => 0,
@@ -283,9 +287,18 @@ class ClientController extends Controller
             ];
             return response()->json($response, 400, [], JSON_PRETTY_PRINT);
         }
+
+        /*
+         * Get The monthly calls*/
+        $from_month_year = date("Y-m", strtotime("-5 month"));
+        $monthlyApiCalls = ApiCallCount::where('month_year', '>', $from_month_year)
+            ->where('token_api_key_id', 'like', $apiKeyModel->id)
+            ->select('month_year', 'total_call')->get();
+        $data = $apiKeyModel->toArray();
+        $data['report'] = $monthlyApiCalls;
         $response = [
             'status' => 1,
-            'data' => ['api_key'=> $apiKeyModel->api_key]
+            'data' => $data
         ];
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
@@ -325,13 +338,11 @@ class ClientController extends Controller
         return response()->json($response, 400, [], JSON_PRETTY_PRINT);
 
     }
+
     // get identity from c_access_token
     public function generate_refresh_own_key(Request $request){
         $modelClient = $this->findModelFromAccessToken($request->headers->all()['c-access-token'][0]);
-        $data = [];
-        $data['api_key'] = md5(uniqid());
-        $data['debug'] = 'false';
-        $model = TokenApiKey::updateOrCreate(['client_id'=> $modelClient->id], $data);
+        $model = self::generate_or_refresh_api_key($modelClient->id);
         $response = [
             'status' => 1,
             'data' => $model
@@ -418,4 +429,14 @@ class ClientController extends Controller
         return $model;
     }
 
+
+    /**
+    Supporting Functions*/
+    private static function generate_or_refresh_api_key($client_id){
+        $data = [];
+        $data['api_key'] = md5(uniqid());
+        $data['debug'] = 'false';
+        $model = TokenApiKey::updateOrCreate(['client_id'=> $client_id], $data);
+        return $model;
+    }
 }
