@@ -61,12 +61,11 @@ $app->singleton(
 */
 
  $app->middleware([
-     App\Http\Middleware\ExampleMiddleware::class
+     App\Http\Middleware\ExampleMiddleware::class,
+     palanik\lumen\Middleware\LumenCors::class
  ]);
 
  $app->routeMiddleware([
-     'cors' => palanik\lumen\Middleware\LumenCors::class,
-
      'auth' => App\Http\Middleware\Authenticate::class,
      'auth_api_key' => App\Http\Middleware\AuthApiKey::class,
      'auth_user' => App\Http\Middleware\AuthUser::class,
