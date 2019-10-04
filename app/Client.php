@@ -17,6 +17,7 @@ class Client extends Model
                 'first_name'    => 'required',
                 'last_name'     => 'required',
                 'gender'        => 'required|in:Male,Female,Other',
+                /*'mobile_no' => array('required', 'regex:/^01(1|3|4|5|6|7|8|9)\d{8}$/'),*/
                 'dob'           => 'required',
                 'type'          => 'required|in:personal,professional',
                 'company_name'  => 'required_if:type,professional',
@@ -29,6 +30,7 @@ class Client extends Model
                 'first_name'    => 'required',
                 'last_name'     => 'required',
                 'gender'        => 'required|in:Male,Female,Other',
+                /*'mobile_no' => array('required', 'regex:/^01(1|3|4|5|6|7|8|9)\d{8}$/'),*/
                 'dob'           => 'required',
                 'type'          => 'required|in:personal,professional',
                 'company_name'  => 'required_if:type,professional',
