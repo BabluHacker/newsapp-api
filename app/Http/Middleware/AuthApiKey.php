@@ -54,8 +54,10 @@ class AuthApiKey
         }
         if($api_key) {
             $error = $this->updateApiCall($api_key->id, $api_key->pricing_plan_id);
-            $api_key->increment('total_call');
-            $api_key->save();
+            if($error['no_error']) {
+                $api_key->increment('total_call');
+                $api_key->save();
+            }
             return $error;
         }
         return $error;
