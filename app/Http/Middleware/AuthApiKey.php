@@ -72,7 +72,7 @@ class AuthApiKey
         ];
         $this_month = date('Y-m');
         $api_call = ApiCallCount::firstOrCreate(['token_api_key_id'=>$api_key_id], ['month_year'=>$this_month]);
-        $api_call->increment('total_call');
+
         //for debug true don't check pricing plan
         if(env('APP_DEBUG')) {
             $api_call->save();
@@ -98,7 +98,7 @@ class AuthApiKey
                 }
             }
         }
-
+        $api_call->increment('total_call');
         $api_call->save();
         return $error;
     }
