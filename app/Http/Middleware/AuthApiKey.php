@@ -45,7 +45,7 @@ class AuthApiKey
                     if ($api_key->next_call > time()){
                         $error['no_error'] = false;
                         $error['message'] = "According to FREE plan ".env('API_CALL_GAP')." seconds gap between 2 consecutive requests. Try again after";
-                        $error['message'] = time()." ".(time() + env('API_CALL_GAP'));
+                        //$error['message'] = time()." ".(time() + env('API_CALL_GAP'));
                         return $error;
                     }else {
                         $api_key->next_call = time() + env('API_CALL_GAP');
