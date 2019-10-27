@@ -11,7 +11,8 @@
 |
 */
 
-
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 $router->get('/', function () use ($router) {
     //return $router->app->version();
@@ -19,7 +20,6 @@ $router->get('/', function () use ($router) {
         'status' => 1,
         'data' => "Technocrats NewsBoard App RESTful API--- v2"
     ];
-
     return response()->json($response, 200, [], JSON_PRETTY_PRINT);
 });
 
@@ -28,6 +28,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
 
     //testing
     $app->get('nested','NewsController@getJoined');
+
 
 
     $router->group( ['prefix' => 'token_api_key' ], function($app) use ($router)
