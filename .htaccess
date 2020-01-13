@@ -1,0 +1,4 @@
+<FilesMatch ".htaccess|.env|artisan|.gitignore|apirouter.md|composer.json|composer.lock|notes_to_projects|phpunit.xml|sqls_to_execute">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
