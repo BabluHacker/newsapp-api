@@ -52,6 +52,7 @@ class Category extends Model
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? Category::select(explode(",", $params['fields'])):Category::select();
 
+
         if(isset($params['name']) and $params['name']!="" and $params['name']!="null"){
             $query->where('name', 'like', $params['name']);
         }

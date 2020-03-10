@@ -74,7 +74,7 @@ class Newspaper extends Model
             $query->orderBy($order);
         }
 
-        $data = $query->pagpaginateinate($limit);
+        $data = $query->paginate($limit);
 
         return [
             'status'=>1,
