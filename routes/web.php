@@ -178,7 +178,12 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->post('/search', 'NewsController@search'); // date-range, keywords, newspaper_id, category_id, tag_ids
     });
 
+    $router->group( ['prefix' => 'test' ], function($app)
+    {
 
-
+        $app->post('/','TestController@image_resize');
+        $app->post('/del_s3_image','TestController@delete_s3_image');
+        $app->get('/time','TestController@timestamp');
+    });
 
 });

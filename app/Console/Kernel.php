@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Aws\Command;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\ImageUploads::class
     ];
 
     /**
@@ -24,6 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        $schedule->command('daily:tasks')
+            ->timezone('Asia/Dhaka')
+            ->cron('*/5 * * * *'); // every 5 minutes
     }
 }

@@ -24,6 +24,7 @@ $app = new Laravel\Lumen\Application(
 $app->withFacades(true, [
     'Illuminate\Support\Facades\Mail' => 'Mail',
     'Maatwebsite\Excel\Facades\Excel' => 'Excel',
+    'Intervention\Image\Facades\Image' => 'Image'
 ]);
 
  $app->withEloquent();
@@ -39,6 +40,13 @@ $app->withFacades(true, [
 |
 */
 
+$app->singleton('filesystem', function ($app) {
+    return $app->loadComponent(
+        'filesystems',
+        Illuminate\Filesystem\FilesystemServiceProvider::class,
+        'filesystem'
+    );
+});
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
@@ -90,6 +98,9 @@ $app->singleton(
  $app->register(App\Providers\AppServiceProvider::class);
  $app->register(App\Providers\AuthServiceProvider::class);
  $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->register(Intervention\Image\ImageServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -105,8 +116,9 @@ $app->singleton(
 /*
  * ----CUSTOM---- Mail & Excel Configs HERE ----*/
 $app->configure('mail');
-$app->register(Illuminate\Mail\MailServiceProvider::class);
-$app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
+$app->configure('filesystems');
+
+
 /*---------------------------------------*/
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
