@@ -184,6 +184,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->post('/','TestController@image_resize');
         $app->post('/del_s3_image','TestController@delete_s3_image');
         $app->get('/time','TestController@timestamp');
+        $app->get('/s3_summary','TestController@get_s3_summary');
     });
 
 });

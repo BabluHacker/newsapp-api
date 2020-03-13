@@ -48,6 +48,18 @@ class TestController extends Controller
         $data = News::where('published_time', '>=', Carbon::now()->subWeek(1))->get();
         return response()->json($data, 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function get_s3_summary(){
+        $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subWeek(1))
+            ->where('image_url', '<>', '')
+            ->where('s3_image_url', '=', null)
+            ->get();
+        $oldNewsModels = News::where('published_time', '<', Carbon::now()->subWeek(1))
+            ->where('s3_image_url', '<>', null)
+            ->get();
+        return response()->json($latestNewsModels->count().' '.$oldNewsModels->count(), 200, [], JSON_PRETTY_PRINT);
+
+    }
 }
 
 
