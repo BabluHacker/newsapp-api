@@ -57,6 +57,7 @@ class ImageUploads extends Command
         $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subDays(4))
             ->where('image_url', '<>', '')
             ->where('s3_image_url', '=', null)
+            ->orderByDesc('id')
             ->get();
         $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
             ->where('s3_image_url', '<>', null)

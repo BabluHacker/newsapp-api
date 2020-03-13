@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('daily:tasks')
+        $schedule->command('image:uploads')
             ->timezone('Asia/Dhaka')
-            ->cron('*/5 * * * *'); // every 5 minutes
+            ->everyFiveMinutes(); // every 5 minutes
     }
 }
