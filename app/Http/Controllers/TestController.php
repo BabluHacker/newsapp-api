@@ -29,7 +29,7 @@ class TestController extends Controller
         $output = curl_exec($ch);
         curl_close($ch);
 
-        $img = Image::make($output);
+        $img = Image::make(base64_encode($output));
         $ht = $img->height() < 400 ? $img->height(): 400;
         $img->heighten($ht, function ($constraint) {
             $constraint->upsize();
