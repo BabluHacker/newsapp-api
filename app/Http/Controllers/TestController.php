@@ -57,7 +57,7 @@ class TestController extends Controller
         $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
             ->where('s3_image_url', '<>', null)
             ->get();
-        return response()->json($latestNewsModels->count().' '.$oldNewsModels->count(), 200, [], JSON_PRETTY_PRINT);
+        return response()->json($latestNewsModels->count().' '.$oldNewsModels->count().' last_id:'.$latestNewsModels->max('id'), 200, [], JSON_PRETTY_PRINT);
 
     }
 }
