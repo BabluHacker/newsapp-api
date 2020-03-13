@@ -55,14 +55,17 @@ class ImageUploads extends Command
     public function handle()
     {
         $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subWeek(1))
+            ->where('image_url', '<>', '')
             ->where('s3_image_url', '=', null)
             ->get();
         $oldNewsModels = News::where('published_time', '<', Carbon::now()->subWeek(1))
             ->where('s3_image_url', '<>', null)
             ->get();
         foreach ($latestNewsModels as $news){
+            $url = $this->storeImage($news->image_url);
+            if(!$url) continue;
             $news->update([
-                's3_image_url' => $this->storeImage($news->image_url)
+                's3_image_url' => $url
             ]);
         }
         foreach ($oldNewsModels as $news){
@@ -74,21 +77,27 @@ class ImageUploads extends Command
     }
 
     private function storeImage($external_url){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $external_url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-        $output = curl_exec($ch);
-        curl_close($ch);
+        try {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $external_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+            $output = curl_exec($ch);
+            curl_close($ch);
 
-        $img = Image::make(base64_encode($output));
-        $ht = $img->height() < 400 ? $img->height(): 400;
-        $img->heighten($ht, function ($constraint) {
-            $constraint->upsize();
-        });
-        $path = 'image_urls/'.Uuid::uuid().'.jpg';
-        Storage::disk('s3')->put($path, $img->stream('jpg', 50));
-        return $path;
+            $img = Image::make(base64_encode($output));
+            $ht = $img->height() < 400 ? $img->height(): 400;
+            $img->heighten($ht, function ($constraint) {
+                $constraint->upsize();
+            });
+            $path = 'image_urls/'.Uuid::uuid().'.jpg';
+            Storage::disk('s3')->put($path, $img->stream('jpg', 50));
+            return $path;
+        }
+        catch (\Exception $e){
+            return false;
+        }
+
     }
     private function deleteImage($s3_path){
         Storage::disk('s3')->delete($s3_path);
