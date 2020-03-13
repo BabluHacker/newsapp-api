@@ -49,12 +49,12 @@ class TestController extends Controller
         return response()->json($data, 200, [], JSON_PRETTY_PRINT);
     }
 
-    public function get_s3_summary(){
-        $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subDay(4))
+    public function get_s3_summary(Request $request){
+        $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subDays(4))
             ->where('image_url', '<>', '')
             ->where('s3_image_url', '=', null)
             ->get();
-        $oldNewsModels = News::where('published_time', '<', Carbon::now()->subWeek(5))
+        $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
             ->where('s3_image_url', '<>', null)
             ->get();
         return response()->json($latestNewsModels->count().' '.$oldNewsModels->count(), 200, [], JSON_PRETTY_PRINT);
