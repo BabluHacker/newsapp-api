@@ -61,6 +61,12 @@ class ImageUploads extends Command
         $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
             ->where('s3_image_url', '<>', null)
             ->get();
+        foreach ($oldNewsModels as $news){
+            $this->deleteImage($news->s3_image_url);
+            $news->update([
+                's3_image_url' => null
+            ]);
+        }
         foreach ($latestNewsModels as $news){
             $url = $this->storeImage($news->image_url);
             if(!$url) continue;
@@ -68,12 +74,7 @@ class ImageUploads extends Command
                 's3_image_url' => $url
             ]);
         }
-        foreach ($oldNewsModels as $news){
-            $this->deleteImage($news->s3_image_url);
-            $news->update([
-                's3_image_url' => null
-            ]);
-        }
+
     }
 
     private function storeImage($external_url){
