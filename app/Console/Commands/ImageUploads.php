@@ -54,11 +54,11 @@ class ImageUploads extends Command
      */
     public function handle()
     {
-        $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subWeek(1))
+        $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subDays(4))
             ->where('image_url', '<>', '')
             ->where('s3_image_url', '=', null)
             ->get();
-        $oldNewsModels = News::where('published_time', '<', Carbon::now()->subWeek(1))
+        $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
             ->where('s3_image_url', '<>', null)
             ->get();
         foreach ($latestNewsModels as $news){
