@@ -19,15 +19,17 @@ class NewsController extends Controller
             'index', 'view'
         ]]);
     }
-    public function getJoined(Request $request){
-        $newses = News::with('category')->with('newspaper')->get();
-        $newses2 = CategoryPaperUrl::find(2)->category;
-        $cat = Newspaper::find(9)->url()->with('newspaper')->with('category')->get();
-        $cat2 = Newspaper::find(9)->news()->with('newspaper')->with('category')->get();
-        $cat3 = Category::find(4)->news()->get();
+//    public function getJoined(Request $request){
+//        $newses = News::with('category')->with('newspaper')->get();
+//        $newses2 = CategoryPaperUrl::find(2)->category;
+//        $cat = Newspaper::find(9)->url()->with('newspaper')->with('category')->get();
+//        $cat2 = Newspaper::find(9)->news()->with('newspaper')->with('category')->get();
+//        $cat3 = Category::find(4)->news()->get();
+//
+//        return response()->json($cat3, 200, [], JSON_PRETTY_PRINT);
+//    }
 
-        return response()->json($cat3, 200, [], JSON_PRETTY_PRINT);
-    }
+
     public function index(Request $request)
     {
 //        (DB::enableQueryLog());
@@ -42,6 +44,10 @@ class NewsController extends Controller
         $model = $this->findModel($request, $id);
 //        dd(DB::getQueryLog());
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
+    }
+
+    public function related(Request $request, $news_id){
+
     }
 
     public function update(Request $request, $id)

@@ -81,6 +81,29 @@ class News extends Model
             'data' => $data
         ];
     }
+    static public function related_search($request, $news_id){
+        $params = $request->all();
+        if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
+        $limit  = isset($params['limit']) ? $params['limit'] : 10;
+        $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
+        if(isset($params['with'])){
+            $withs = explode(',', $params['with']);
+            foreach ($withs as $with){
+                $query->with($with);
+            }
+        }
 
+
+
+        $query->orderBy('published_time', 'desc');
+
+        $data = $query->paginate($limit);
+
+        return [
+            'status'=>1,
+            'data' => $data
+        ];
+
+    }
 
 }
