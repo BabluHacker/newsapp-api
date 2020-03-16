@@ -68,8 +68,8 @@ class News extends Model
             $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");
         }
         /** latest crawler id*/
-        if(isset($params['last_news_id']) and $params['last_news_id']!="" and $params['last_news_id']!="null"){
-            $query->where('id', '>', $params['last_news_id']);
+        if(isset($params['last_news_date']) and $params['last_news_date']!="" and $params['last_news_date']!="null"){
+            $query->where('published_time', '>', $params['last_news_date']);
         }
 
         $query->orderBy('published_time', 'desc');
