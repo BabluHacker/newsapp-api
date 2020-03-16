@@ -30,7 +30,7 @@ class NewsController extends Controller
     }
     public function index(Request $request)
     {
-        (DB::enableQueryLog());
+//        (DB::enableQueryLog());
         $response = News::search($request);
 
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
@@ -38,9 +38,9 @@ class NewsController extends Controller
 
     public function view(Request $request, $id)
     {
-        (DB::enableQueryLog());
+//        (DB::enableQueryLog());
         $model = $this->findModel($request, $id);
-        dd(DB::getQueryLog());
+//        dd(DB::getQueryLog());
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
     }
 

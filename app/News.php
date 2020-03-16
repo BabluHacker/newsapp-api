@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class News extends Model
 {
+    protected $casts = [
+        'tag_ids' => 'json',
+    ];
     protected $table="newses";
     protected $guarded = ['id', 'updated_at', 'created_at'];
 
@@ -64,6 +67,11 @@ class News extends Model
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
             $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");
         }
+        /** latest crawler id*/
+        if(isset($params['last_news_id']) and $params['last_news_id']!="" and $params['last_news_id']!="null"){
+            $query->where('id', '>', $params['last_news_id']);
+        }
+
         $query->orderBy('published_time', 'desc');
 
         $data = $query->paginate($limit);
