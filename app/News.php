@@ -82,6 +82,7 @@ class News extends Model
         ];
     }
     static public function related_search($request, $news_id){
+        $modelNews = News::find($news_id);
         $params = $request->all();
         if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
@@ -93,7 +94,13 @@ class News extends Model
             }
         }
 
+        if($modelNews->tag_ids == '{}'){
+            $query->where('category_id', '=', $modelNews->category_id);
+        }
 
+        else{
+            $query->whereRaw('JSON_CONTAINS(tag_ids, ?)', json_encode($modelNews->tag_ids));
+        }
 
         $query->orderBy('published_time', 'desc');
 

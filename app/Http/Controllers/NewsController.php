@@ -38,6 +38,8 @@ class NewsController extends Controller
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
 
+
+
     public function view(Request $request, $id)
     {
 //        (DB::enableQueryLog());
@@ -47,7 +49,9 @@ class NewsController extends Controller
     }
 
     public function related(Request $request, $news_id){
+        $response = News::related_search($request, $news_id);
 
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
 
     public function update(Request $request, $id)

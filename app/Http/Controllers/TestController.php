@@ -8,6 +8,7 @@ use App\Newspaper;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\Filters\DemoFilter;
@@ -96,7 +97,23 @@ class TestController extends Controller
 //            'tag_ids->phone_no' => "018214397090",
 //            'tag_ids->address'  => 'gasfhadsf'
 //        ]);
-        $model = News::where('tag_ids->phone_no', 'like', '018%')->get();
+//        $model = News::where('tag_ids->phone_no', 'like', '018%')->get();
+
+
+        $model = News::/*whereRaw('cast(? as json) =  tag_ids ', json_encode(array(
+            '5' => 'politics',
+            '1' => 'national',
+            '2' => 'test'
+        )))*/
+            /*whereRaw('ARRAY_CONTAINS(JSON_KEYS(tag_ids), 2) ')*/
+//                ->whereRaw('array_contains( JSON_KEYS(tag_ids), "2")')
+            whereRaw('JSON_CONTAINS(tag_ids, ?)', json_encode(array(
+
+            )))
+            ->select(DB::raw('(JSON_KEYS(tag_ids))'))
+            ->get();
+
+
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
     }
 }
