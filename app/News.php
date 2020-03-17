@@ -93,6 +93,7 @@ class News extends Model
                 $query->with($with);
             }
         }
+        $query->where('id', '<>', $news_id);
 
         if($modelNews->tag_ids == '{}'){
             $query->where('category_id', '=', $modelNews->category_id);
