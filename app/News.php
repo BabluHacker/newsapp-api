@@ -65,7 +65,7 @@ class News extends Model
             }
         }
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
-            $query->whereRaw("FIND_IN_SET('".$params['tag_id']."', tag_ids)");
+            $query->whereNotNull('tag_ids->'.$params['tag_id']);
         }
         /** latest crawler id*/
         if(isset($params['last_news_date']) and $params['last_news_date']!="" and $params['last_news_date']!="null"){
