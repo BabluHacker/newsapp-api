@@ -93,7 +93,7 @@ class ImageUploads extends Command
                 $constraint->upsize();
             });
             $path = 'image_urls/'.Uuid::uuid().'.jpg';
-            Storage::disk('s3')->put($path, $img->stream('jpg', 50));
+            Storage::disk('s3')->put($path, $img->stream('jpg', 30));
             return $path;
         }
         catch (\Exception $e){

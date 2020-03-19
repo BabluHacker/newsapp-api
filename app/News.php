@@ -43,8 +43,8 @@ class News extends Model
         if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
-        if(isset($params['with'])){
-            $withs = explode(',', $params['with']);
+        if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){
+            $withs = explode('!', $params['with']);
             foreach ($withs as $with){
                 $query->with($with);
             }
@@ -67,6 +67,7 @@ class News extends Model
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
             $query->whereNotNull('tag_ids->'.$params['tag_id']);
         }
+
         /** latest crawler id*/
         if(isset($params['last_news_date']) and $params['last_news_date']!="" and $params['last_news_date']!="null"){
             $query->where('published_time', '>', $params['last_news_date']);
@@ -87,8 +88,8 @@ class News extends Model
         if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
-        if(isset($params['with'])){
-            $withs = explode(',', $params['with']);
+        if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){
+            $withs = explode('!', $params['with']);
             foreach ($withs as $with){
                 $query->with($with);
             }

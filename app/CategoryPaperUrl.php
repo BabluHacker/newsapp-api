@@ -52,8 +52,8 @@ class CategoryPaperUrl extends Model
         $limit  = isset($params['limit']) ? $params['limit'] : 10;
         $query  = isset($params['fields'])? CategoryPaperUrl::select(explode(",", $params['fields'])):CategoryPaperUrl::select();
 
-        if(isset($params['with'])){
-            $withs = explode(',', $params['with']);
+        if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){
+            $withs = explode('!', $params['with']);
             foreach ($withs as $with){
                 $query->with($with);
             }
