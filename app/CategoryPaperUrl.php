@@ -66,6 +66,7 @@ class CategoryPaperUrl extends Model
             $query->where('category_id', 'like', $params['category_id']);
         }
 
+
         if(isset($order)){
             $query->orderBy($order);
         }

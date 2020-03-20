@@ -53,6 +53,8 @@ class Category extends Model
         $query  = isset($params['fields'])? Category::select(explode(",", $params['fields'])):Category::select();
 
 
+
+
         if(isset($params['name']) and $params['name']!="" and $params['name']!="null"){
             $query->where('name', 'like', $params['name']);
         }
@@ -68,6 +70,15 @@ class Category extends Model
         if(isset($params['logo_rectangle']) and $params['logo_rectangle']!="" and $params['logo_rectangle']!="null"){
             $query->where('logo_rectangle', 'like', $params['logo_rectangle']);
         }
+
+        // only newspaper wise categories
+        if(isset($params['newspaper_id']) and $params['newspaper_id']!="" and $params['newspaper_id']!="null"){
+            $models = CategoryPaperUrl::where('newspaper_id', '=', $params['newspaper_id'])->get();
+            $category_ids = $models->unique('category_id')->pluck('category_id')->toArray();
+            $query->whereIn('id', $category_ids);
+        }
+
+
         $query->where('is_active', '=', 'Yes');
         $query->orderBy('order_id');
 
