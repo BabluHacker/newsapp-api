@@ -69,6 +69,8 @@ class Newspaper extends Model
             $query->where('logo_rectangle', 'like', $params['logo_rectangle']);
         }
 
+        $query->where('is_active', '=', 'Yes');
+
 
         if(isset($order)){
             $query->orderBy($order);
