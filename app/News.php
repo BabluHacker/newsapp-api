@@ -54,7 +54,10 @@ class News extends Model
             $query->where('news_type', 'like', $params['news_type']);
         }
         if(isset($params['lang']) and $params['lang']!="" and $params['lang']!="null"){
-            $query->where('lang', 'like', $params['lang']);
+            if($params['lang'] != 'both'){
+                $query->where('lang', 'like', $params['lang']);
+            }
+
         }
         if(isset($params['newspaper_id']) and $params['newspaper_id']!="" and $params['newspaper_id']!="null"){
             $query->where('newspaper_id', 'like', $params['newspaper_id']);
