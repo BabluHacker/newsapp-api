@@ -92,7 +92,6 @@ class News extends Model
             else{
                 $query->whereNotNull('tag_ids->'.$params['tag_id']);
             }
-
         }
 
         /** latest crawler id*/

@@ -85,6 +85,7 @@ class NewsController extends Controller
     public function findModel(Request $request, $id)
     {
         $model = News::find($id);
+
         if (!$model) {
             $response = [
                 'status' => 0,
@@ -94,8 +95,8 @@ class NewsController extends Controller
             die;
         }
         $params = $request->all();
-        if(isset($params['with'])){
-            $withs = explode(',', $params['with']);
+        if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){
+            $withs = explode('!', $params['with']);
             foreach ($withs as $with){
                 $model->$with;
             }
