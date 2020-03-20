@@ -120,7 +120,11 @@ class News extends Model
             }
         }
         $query->where('id', '<>', $news_id);
-
+        if(isset($params['lang']) and $params['lang']!="" and $params['lang']!="null"){
+            if($params['lang'] != 'both'){
+                $query->where('lang', 'like', $params['lang']);
+            }
+        }
         if($modelNews->tag_ids == '{}'){
             $query->where('category_id', '=', $modelNews->category_id);
         }
