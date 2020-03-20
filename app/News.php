@@ -63,15 +63,34 @@ class News extends Model
             $query->where('newspaper_id', 'like', $params['newspaper_id']);
         }
         if(isset($params['category_id']) and $params['category_id']!="" and $params['category_id']!="null"){
-            if ($params['category_id'] == 1){ // Top Picks
 
+
+            // coronavirus only section
+            if($params['category_id'] == 15){
+                // search tag also -> 16
+                $query->whereNotNull('tag_ids->16');
+                $query->orWhere('category_id', 'like', $params['category_id']);
             }
-            else {
-                $query->where('category_id', 'like', $params['category_id']);
+            else{
+                if ($params['category_id'] == 1){ // Top Picks
+
+                }
+                else {
+                    $query->where('category_id', 'like', $params['category_id']);
+                }
             }
+
         }
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
-            $query->whereNotNull('tag_ids->'.$params['tag_id']);
+            // coronavirus special
+            if($params['tag_id'] == 16){
+                $query->whereNotNull('tag_ids->'.$params['tag_id']);
+                $query->orWhere('category_id', 'like', 15);
+            }
+            else{
+                $query->whereNotNull('tag_ids->'.$params['tag_id']);
+            }
+
         }
 
         /** latest crawler id*/

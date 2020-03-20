@@ -68,6 +68,7 @@ class Category extends Model
         if(isset($params['logo_rectangle']) and $params['logo_rectangle']!="" and $params['logo_rectangle']!="null"){
             $query->where('logo_rectangle', 'like', $params['logo_rectangle']);
         }
+        $query->where('is_active', '=', 'Yes');
         $query->orderBy('order_id');
 
         if(isset($order)){
