@@ -13,6 +13,7 @@ class News extends Model
     ];
     protected $table="newses";
     protected $guarded = ['id', 'updated_at', 'created_at'];
+    protected $hidden = ['article', 'updated_at', 'created_at'];
 
     /*
      * Relations*/
