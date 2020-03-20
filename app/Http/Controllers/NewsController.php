@@ -54,6 +54,12 @@ class NewsController extends Controller
         return response()->json($response, 200, [], JSON_PRETTY_PRINT);
     }
 
+    public function global_search(Request $request){
+        $response = News::global_search($request);
+
+        return response()->json($response, 200, [], JSON_PRETTY_PRINT);
+    }
+
     public function update(Request $request, $id)
     {
         $data_to_insert = $request->all();

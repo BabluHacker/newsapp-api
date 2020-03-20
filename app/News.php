@@ -146,4 +146,83 @@ class News extends Model
 
     }
 
+    static public function global_search($request){
+        $params = $request->all();
+        if(isset($params['limit'])) $params['limit'] = $params['limit']>100 ? 100: $params['limit'];
+        $limit  = isset($params['limit']) ? $params['limit'] : 10;
+        $query  = isset($params['fields'])? News::select(explode(",", $params['fields'])):News::select();
+        if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){
+            $withs = explode('!', $params['with']);
+            foreach ($withs as $with){
+                $query->with($with);
+            }
+        }
+
+        /*
+         * tag (category also included)
+         * (now)keywords
+         * (now)date_range
+         *
+         * newspaper_id
+         *
+         * */
+        if(isset($params['keywords']) and $params['keywords']!="" and $params['keywords']!="null"){
+            $keywords = array_filter(explode(',', $params['keywords']));
+            $sec_keywords = $keywords;
+            $tags = Tag::where(function ($q) use ($sec_keywords){
+                $is_eng = !preg_match('/[^A-Za-z0-9]/', $sec_keywords[0]);
+                if($is_eng) $q->where('keywords', 'like', '%'.$sec_keywords[0].'%');
+                else $q->where('bn_keywords', 'like', '%'.$sec_keywords[0].'%');
+
+                unset($sec_keywords[0]);
+                foreach ($sec_keywords as $sec_keyword) {
+                    $is_eng = preg_match('/[^A-Za-z0-9]/', $sec_keyword);
+                    if($is_eng) $q->orWhere('keywords', 'like', '%'.$sec_keyword.'%');
+                    else $q->orWhere('bn_keywords', 'like', '%'.$sec_keyword.'%');
+                }
+            })->get()->pluck('id')->toArray();
+
+
+
+            $query->where(function ($query) use ($keywords, $params, $tags){
+                $query->where(function ($q) use ($params, $keywords){
+                    $q->where('article', 'like', '%'.$keywords[0].'%');
+                    unset($keywords[0]);
+                    foreach ($keywords as $keyword) {
+                        $q->orWhere('article', 'like', '%'.$keyword.'%');
+                    }
+                })->orWhere(function ($q) use ($tags){
+                    foreach ($tags as $tag){
+                        if($tag == 16){
+                            $q->where(function ($q) use ($tag){
+                                $q->whereNotNull('tag_ids->'.$tag)
+                                    ->orWhere('category_id', 'like', 15);
+                            });
+                        }
+                        else{
+                            $q->whereNotNull('tag_ids->'.$tag);
+                        }
+                    }
+                });
+            });
+        }
+
+
+        if(isset($params['date_from']) and $params['date_from']!="" and $params['date_from']!="null"){
+            $query->where('published_time', '>=', $params['date_from']);
+        }
+        if(isset($params['date_to']) and $params['date_to']!="" and $params['date_to']!="null"){
+            $query->where('published_time', '<=', $params['date_to']);
+        }
+
+        $query->orderBy('published_time', 'desc');
+
+        $data = $query->paginate($limit);
+
+        return [
+            'status'=>1,
+            'data' => $data
+        ];
+    }
+
 }

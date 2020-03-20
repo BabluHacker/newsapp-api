@@ -177,7 +177,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->delete('/{id}','NewsController@delete');
 
         $app->get('/related/{news_id}','NewsController@related');
-//        $app->post('/search', 'NewsController@search'); // date-range, keywords, newspaper_id, category_id, tag_ids
+        $app->get('/global/search','NewsController@global_search');
     });
 
     $router->group( ['prefix' => 'test' ], function($app)
