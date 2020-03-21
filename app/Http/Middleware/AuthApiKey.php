@@ -20,14 +20,14 @@ class AuthApiKey
         else{
             return response('Unauthorized Api Key or Include api Key', 401);
         }*/
-        if(!empty($headers['api-key'][0])) {
+        /*if(!empty($headers['api-key'][0])) {
             if($headers['api-key'][0] != 'durbeen_techno1@5'){
                 return response('Unauthorized Api Key', 401);
             }
         }
         else{
             return response('Unauthorized Api Key', 401);
-        }
+        }*/
 
         return $next($request);
     }
