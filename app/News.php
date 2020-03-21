@@ -185,13 +185,7 @@ class News extends Model
 
 
             $query->where(function ($query) use ($keywords, $params, $tags){
-                $query->where(function ($q) use ($params, $keywords){
-                    $q->where('article', 'like', '%'.$keywords[0].'%');
-                    unset($keywords[0]);
-                    foreach ($keywords as $keyword) {
-                        $q->orWhere('article', 'like', '%'.$keyword.'%');
-                    }
-                })->orWhere(function ($q) use ($tags){
+                $query->where(function ($q) use ($tags){
                     foreach ($tags as $tag){
                         if($tag == 16){
                             $q->where(function ($q) use ($tag){
@@ -202,6 +196,12 @@ class News extends Model
                         else{
                             $q->whereNotNull('tag_ids->'.$tag);
                         }
+                    }
+                })->orWhere(function ($q) use ($params, $keywords){
+                    $q->where('article', 'like', '%'.$keywords[0].'%');
+                    unset($keywords[0]);
+                    foreach ($keywords as $keyword) {
+                        $q->orWhere('article', 'like', '%'.$keyword.'%');
                     }
                 });
             });
