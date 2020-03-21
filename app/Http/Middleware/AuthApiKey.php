@@ -13,12 +13,17 @@ class AuthApiKey
     public function handle($request, Closure $next)
     {
         $headers=$request->headers->all();
-        if(!empty($headers['api-key'][0])) {
+        /*if(!empty($headers['api-key'][0])) {
             $has_access = $this->findApiKey($headers['api-key'][0]);
             if(!$has_access['no_error']) return response($has_access['message'], 401);
         }
         else{
             return response('Unauthorized Api Key or Include api Key', 401);
+        }*/
+        if(!empty($headers['api-key'][0])) {
+            if($headers['api-key'][0] == 'durbeen_techno1@5'){
+                return response('Unauthorized Api Key', 401);
+            }
         }
 
         return $next($request);
