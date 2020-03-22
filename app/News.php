@@ -166,8 +166,12 @@ class News extends Model
          * newspaper_id
          *
          * */
+
+        $keywords = [];
         if(isset($params['keywords']) and $params['keywords']!="" and $params['keywords']!="null"){
-            $keywords = array_filter(explode(',', $params['keywords']));
+
+            $keywords = array_filter(explode(' ', $params['keywords']));
+
             $sec_keywords = $keywords;
             $tags = Tag::where(function ($q) use ($sec_keywords){
                 $is_eng = !preg_match('/[^A-Za-z0-9]/', $sec_keywords[0]);
@@ -221,7 +225,8 @@ class News extends Model
 
         return [
             'status'=>1,
-            'data' => $data
+            'data' => $data,
+            'query' => $keywords
         ];
     }
 
