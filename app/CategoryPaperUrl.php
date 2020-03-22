@@ -49,7 +49,7 @@ class CategoryPaperUrl extends Model
     static public function search($request)
     {
         $params = $request->all();
-        $limit  = isset($params['limit']) ? $params['limit'] : 10;
+        $limit  = 1000;
         $query  = isset($params['fields'])? CategoryPaperUrl::select(explode(",", $params['fields'])):CategoryPaperUrl::select();
 
         if(isset($params['with']) and $params['with']!="" and $params['with']!="null"){

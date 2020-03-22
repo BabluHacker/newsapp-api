@@ -49,7 +49,7 @@ class Newspaper extends Model
     static public function search($request)
     {
         $params = $request->all();
-        $limit  = isset($params['limit']) ? $params['limit'] : 10;
+        $limit  = 1000;
         $query  = isset($params['fields'])? Newspaper::select(explode(",", $params['fields'])):Newspaper::select();
 
 

@@ -38,7 +38,7 @@ class Tag extends Model
     static public function search($request)
     {
         $params = $request->all();
-        $limit  = isset($params['limit']) ? $params['limit'] : 10;
+        $limit  = 1000;
         $query  = isset($params['fields'])? Tag::select(explode(",", $params['fields'])):Tag::select();
 
 

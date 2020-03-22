@@ -218,6 +218,11 @@ class News extends Model
         if(isset($params['date_to']) and $params['date_to']!="" and $params['date_to']!="null"){
             $query->where('published_time', '<=', $params['date_to']);
         }
+        if(isset($params['lang']) and $params['lang']!="" and $params['lang']!="null"){
+            if($params['lang'] != 'both'){
+                $query->where('lang', 'like', $params['lang']);
+            }
+        }
 
         $query->orderBy('published_time', 'desc');
 
