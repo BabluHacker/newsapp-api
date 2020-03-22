@@ -220,7 +220,6 @@ class News extends Model
         }
 
         $query->orderBy('published_time', 'desc');
-        $query->orderBy('lang');
 
 
         $data = $query->paginate($limit);
