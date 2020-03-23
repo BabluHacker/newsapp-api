@@ -189,6 +189,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/s3_summary','TestController@get_s3_summary');
         $app->get('/logo_refine','TestController@refine_logo');
         $app->get('/mysql_json','TestController@mysql_json');
+        $app->get('/redis','TestController@redis');
     });
 
 });

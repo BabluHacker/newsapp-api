@@ -8,6 +8,7 @@ use App\Newspaper;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -115,6 +116,13 @@ class TestController extends Controller
 
 
         return response()->json($model, 200, [], JSON_PRETTY_PRINT);
+    }
+
+    public function redis(){
+
+        Cache::add('1', 'test', 600);
+        $store = Cache::getStore();
+        return response()->json(Cache::get('1'), 200, [], JSON_PRETTY_PRINT);
     }
 }
 

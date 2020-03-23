@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+
     protected $guarded = ['id', 'updated_at', 'created_at'];
 
     /*
@@ -77,7 +78,6 @@ class Category extends Model
             $category_ids = $models->unique('category_id')->pluck('category_id')->toArray();
             $query->whereIn('id', $category_ids);
         }
-
 
         $query->where('is_active', '=', 'Yes');
         $query->orderBy('order_id');

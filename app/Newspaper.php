@@ -71,7 +71,7 @@ class Newspaper extends Model
 
         $query->where('is_active', '=', 'Yes');
 
-
+        $query->orderBy('order_id');
         if(isset($order)){
             $query->orderBy($order);
         }
