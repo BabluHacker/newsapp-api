@@ -124,6 +124,11 @@ class TestController extends Controller
         $store = Cache::getStore();
         return response()->json(Cache::get('1'), 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function useragent(Request $request){
+        $agent = $request->header('user-agent');
+        return response()->json($agent, 200, [], JSON_PRETTY_PRINT);
+    }
 }
 
 
