@@ -128,7 +128,7 @@ class News extends Model
                 $query->where('lang', 'like', $params['lang']);
             }
         }
-        if($modelNews->tag_ids == '{}'){
+        if($modelNews->tag_ids == null){
             $query->where('category_id', '=', $modelNews->category_id);
         }
 
