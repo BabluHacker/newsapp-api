@@ -59,7 +59,6 @@ class News extends Model
                 $query->where('lang', 'like', $params['lang']);
             }
         }
-        $query->where('lang', 'like', 'bangla');
         if(isset($params['newspaper_id']) and $params['newspaper_id']!="" and $params['newspaper_id']!="null"){
             $query->where('newspaper_id', 'like', $params['newspaper_id']);
         }
