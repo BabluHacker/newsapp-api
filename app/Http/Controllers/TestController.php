@@ -86,9 +86,12 @@ class TestController extends Controller
 //                'newspaper_id' => 1,
 //                'category_id' => 2,
 //                'published_time' => '2020-02-02 00:00:00',
-//                'tag_ids' => json_encode([
-//                    'test' => 12
-//                ])
+//                'tag_ids' => [
+//                    'test' => 12,
+//                    'test_2' => [
+//                        'name'=> 'test'
+//                    ]
+//                ]
 //            ]
 //        );
 
@@ -101,21 +104,21 @@ class TestController extends Controller
 //        $model = News::where('tag_ids->phone_no', 'like', '018%')->get();
 
 
-        $model = News::/*whereRaw('cast(? as json) =  tag_ids ', json_encode(array(
-            '5' => 'politics',
-            '1' => 'national',
-            '2' => 'test'
-        )))*/
-            /*whereRaw('ARRAY_CONTAINS(JSON_KEYS(tag_ids), 2) ')*/
-//                ->whereRaw('array_contains( JSON_KEYS(tag_ids), "2")')
-            whereRaw('JSON_CONTAINS(tag_ids, ?)', json_encode(array(
+//        $model = News::/*whereRaw('cast(? as json) =  tag_ids ', json_encode(array(
+//            '5' => 'politics',
+//            '1' => 'national',
+//            '2' => 'test'
+//        )))*/
+//            /*whereRaw('ARRAY_CONTAINS(JSON_KEYS(tag_ids), 2) ')*/
+////                ->whereRaw('array_contains( JSON_KEYS(tag_ids), "2")')
+//            whereRaw('JSON_CONTAINS(tag_ids, ?)', json_encode(array(
+//
+//            )))
+//            ->select(DB::raw('(JSON_KEYS(tag_ids))'))
+//            ->get();
 
-            )))
-            ->select(DB::raw('(JSON_KEYS(tag_ids))'))
-            ->get();
 
-
-        return response()->json($model, 200, [], JSON_PRETTY_PRINT);
+        return response()->json($model->tag_ids['test_2']['name'], 200, [], JSON_PRETTY_PRINT);
     }
 
     public function redis(){

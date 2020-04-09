@@ -54,46 +54,45 @@ class News extends Model
         if(isset($params['news_type']) and $params['news_type']!="" and $params['news_type']!="null"){
             $query->where('news_type', 'like', $params['news_type']);
         }
-//        if(isset($params['lang']) and $params['lang']!="" and $params['lang']!="null"){
-//            if($params['lang'] != 'both'){
-//                $query->where('lang', 'like', $params['lang']);
-//            }
-//
-//        }
+        if(isset($params['lang']) and $params['lang']!="" and $params['lang']!="null"){
+            if($params['lang'] != 'both'){
+                $query->where('lang', 'like', $params['lang']);
+            }
+        }
         $query->where('lang', 'like', 'bangla');
         if(isset($params['newspaper_id']) and $params['newspaper_id']!="" and $params['newspaper_id']!="null"){
             $query->where('newspaper_id', 'like', $params['newspaper_id']);
         }
         if(isset($params['category_id']) and $params['category_id']!="" and $params['category_id']!="null"){
             // coronavirus only section
-//            if($params['category_id'] == 15){
-//                // search tag also -> 16
-//                $query->where(function ($q) use ($params){
-//                    $q->whereNotNull('tag_ids->16')
-//                        ->orWhere('category_id', 'like', $params['category_id']);
-//                });
-//            }
-//            else{
+            if($params['category_id'] == 15){
+                // search tag also -> 16
+                $query->where(function ($q) use ($params){
+                    $q->whereNotNull('tag_ids->16')
+                        ->orWhere('category_id', 'like', $params['category_id']);
+                });
+            }
+            else{
                 if ($params['category_id'] == 1){ // Top Picks
 
                 }
                 else {
                     $query->where('category_id', 'like', $params['category_id']);
                 }
-//            }
+            }
 
         }
         if(isset($params['tag_id']) and $params['tag_id']!="" and $params['tag_id']!="null"){
             // coronavirus special
-//            if($params['tag_id'] == 16){
-//                $query->where(function ($q) use ($params){
-//                    $q->whereNotNull('tag_ids->'.$params['tag_id'])
-//                        ->orWhere('category_id', 'like', 15);
-//                });
-//            }
-//            else{
+            if($params['tag_id'] == 16){
+                $query->where(function ($q) use ($params){
+                    $q->whereNotNull('tag_ids->'.$params['tag_id'])
+                        ->orWhere('category_id', 'like', 15);
+                });
+            }
+            else{
                 $query->whereNotNull('tag_ids->'.$params['tag_id']);
-//            }
+            }
         }
 
         /** latest crawler id*/
