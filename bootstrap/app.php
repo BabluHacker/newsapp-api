@@ -102,6 +102,7 @@ $app->register(Illuminate\Mail\MailServiceProvider::class);
 $app->register(Maatwebsite\Excel\ExcelServiceProvider::class);
 $app->register(Intervention\Image\ImageServiceProvider::class);
 $app->register(Illuminate\Redis\RedisServiceProvider::class);
+$app->register(Basemkhirat\Elasticsearch\ElasticsearchServiceProvider::class);
 
 /*
 |--------------------------------------------------------------------------

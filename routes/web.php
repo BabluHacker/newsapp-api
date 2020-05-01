@@ -22,7 +22,16 @@ $router->get('/', function () use ($router) {
     ];
     return response()->json($response, 200, [], JSON_PRETTY_PRINT);
 });
+use App\News;    // Use at top of web.php
 
+$router->get('article', function() {
+
+    News::createIndex($shards = null, $replicas = null); // Using this code create command
+    News::reindex(); // Reindex article indices
+
+    $articles = News::searchByQuery(['match' => ['headline' => 'Coronavirus']]);
+    return response()->json($articles, 200, [], JSON_PRETTY_PRINT);
+});
 
 $router->group(['prefix' => 'v1'], function ($app) use ($router) {
 
@@ -179,10 +188,14 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/related/{news_id}','NewsController@related');
         $app->get('/global/search','NewsController@global_search');
     });
+    $router->group( ['prefix' => 'custom' ], function($app)
+    {
+        $app->get('/corona_stat','CustomController@custom_corona_stat');
+        $app->get('/about_app','CustomController@about_app');
 
+    });
     $router->group( ['prefix' => 'test' ], function($app)
     {
-
         $app->post('/','TestController@image_resize');
         $app->post('/del_s3_image','TestController@delete_s3_image');
         $app->get('/time','TestController@timestamp');
