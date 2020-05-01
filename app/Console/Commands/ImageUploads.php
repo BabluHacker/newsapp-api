@@ -54,12 +54,15 @@ class ImageUploads extends Command
      */
     public function handle()
     {
+        $except_paper_ids = [8,9];
         $latestNewsModels = News::where('published_time', '>=', Carbon::now()->subDays(4))
             ->where('image_url', '<>', '')
+            ->whereNotIn('newspaper_id', $except_paper_ids)
             ->where('s3_image_url', '=', null)
             ->orderByDesc('id')
             ->get();
         $oldNewsModels = News::where('published_time', '<', Carbon::now()->subDays(5))
+            ->whereNotIn('newspaper_id', $except_paper_ids)
             ->where('s3_image_url', '<>', null)
             ->get();
         foreach ($oldNewsModels as $news){
