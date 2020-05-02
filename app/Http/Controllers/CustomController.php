@@ -16,19 +16,33 @@ class CustomController extends Controller
     }
 
     public function custom_corona_stat(Request $request){
-        $client = new Client(['base_uri' => 'https://coronavirus-map.p.rapidapi.com/', 'timeout'  => 15.0, ]);
+        $client = new Client(['base_uri' => 'https://coronavirus-monitor.p.rapidapi.com/', 'timeout'  => 15.0, ]);
         try {
 
-            $res = $client->request('GET', 'v1/summary/latest', [
+            $res_world = $client->request('GET', 'coronavirus/worldstat.php', [
                 'headers' => [
-                    "x-rapidapi-host"=> "coronavirus-map.p.rapidapi.com",
+                    "x-rapidapi-host"=> "coronavirus-monitor.p.rapidapi.com",
 	                "x-rapidapi-key"=> env('CORONA_API_KEY')
                 ]
             ]);
+
+            $res_bd = $client->request('GET', 'coronavirus/latest_stat_by_country.php?country=bangladesh', [
+                'headers' => [
+                    "x-rapidapi-host"=> "coronavirus-monitor.p.rapidapi.com",
+	                "x-rapidapi-key"=> env('CORONA_API_KEY')
+                ]
+            ]);
+
+
         } catch (ClientException $exception){
-            $res = $exception->getResponse();
+            $res_world = $exception->getResponse();
+            $res_bd = $exception->getResponse();
         }
-        return response()->json(json_decode($res->getBody()->getContents(), true), $res->getStatusCode(), [], JSON_PRETTY_PRINT);
+        $res = [
+            'world' => json_decode($res_world->getBody()->getContents(), true),
+            'bangladesh' => json_decode($res_bd->getBody()->getContents(), true)
+        ];
+        return response()->json($res, $res_world->getStatusCode(), [], JSON_PRETTY_PRINT);
     }
 
     public function about_app(Request $request){
