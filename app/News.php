@@ -166,7 +166,7 @@ class News extends Model
          * */
 
         $keywords = [];
-        str_replace('খান', '',$params['keywords']);
+        $params['keywords'] = str_replace('খান', '',$params['keywords']);
         if(isset($params['keywords']) and $params['keywords']!="" and $params['keywords']!="null"){
 
             $keywords = array_filter(explode(' ', $params['keywords']));
