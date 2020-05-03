@@ -194,6 +194,24 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/about_app','CustomController@about_app');
 
     });
+    $router->group( ['prefix' => 'stat' ], function($app)
+    {
+        $app->post('/news/{id}','StatController@inc_read_count');
+
+    });
+
+    /** One Signal api*/
+    $router->group( ['prefix' => 'one_signal' ], function($app)
+    {
+        $app->post('/','TestController@image_resize');
+        $app->post('/del_s3_image','TestController@delete_s3_image');
+        $app->get('/time','TestController@timestamp');
+        $app->get('/s3_summary','TestController@get_s3_summary');
+        $app->get('/logo_refine','TestController@refine_logo');
+        $app->get('/mysql_json','TestController@mysql_json');
+        $app->get('/redis','TestController@redis');
+        $app->get('/agent','TestController@useragent');
+    });
     $router->group( ['prefix' => 'test' ], function($app)
     {
         $app->post('/','TestController@image_resize');
