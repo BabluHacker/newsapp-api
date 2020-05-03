@@ -53,4 +53,6 @@ class CustomController extends Controller
         ];
         return response()->json($data, 200, [], JSON_PRETTY_PRINT);
     }
+
+
 }

@@ -4,8 +4,44 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bdc888fe8884f6e54513f191d6e62b46",
+    "content-hash": "a04a91759b08ed30c5fe2fe61eb9a05f",
     "packages": [
+        {
+            "name": "albo-vieira/google-speech-tts",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AlboVieira/google-speech-tts.git",
+                "reference": "31f77952b900846f4c5a00fe899d4c4406504a10"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AlboVieira/google-speech-tts/zipball/31f77952b900846f4c5a00fe899d4c4406504a10",
+                "reference": "31f77952b900846f4c5a00fe899d4c4406504a10",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "GoogleSpeech\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Albo Vieira",
+                    "email": "albovieira@gmail.com"
+                }
+            ],
+            "description": "A wrapper to google translate that generate a audio from a text.",
+            "time": "2017-02-16T20:38:36+00:00"
+        },
         {
             "name": "aws/aws-sdk-php",
             "version": "3.133.35",
@@ -6904,6 +6940,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "albo-vieira/google-speech-tts": 20,
         "palanik/lumen-cors": 20
     },
     "prefer-stable": true,

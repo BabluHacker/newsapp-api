@@ -190,8 +190,10 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
     });
     $router->group( ['prefix' => 'custom' ], function($app)
     {
+
         $app->get('/corona_stat','CustomController@custom_corona_stat');
         $app->get('/about_app','CustomController@about_app');
+        $app->get('/tts','CustomController@tts');
 
     });
     $router->group( ['prefix' => 'stat' ], function($app)

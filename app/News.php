@@ -166,9 +166,11 @@ class News extends Model
          * */
 
         $keywords = [];
+        str_replace('খান', '',$params['keywords']);
         if(isset($params['keywords']) and $params['keywords']!="" and $params['keywords']!="null"){
 
             $keywords = array_filter(explode(' ', $params['keywords']));
+
 
             $sec_keywords = $keywords;
             $tags = Tag::where(function ($q) use ($sec_keywords){
