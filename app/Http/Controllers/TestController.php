@@ -133,6 +133,12 @@ class TestController extends Controller
         $agent = $request->header('user-agent');
         return response()->json($agent, 200, [], JSON_PRETTY_PRINT);
     }
+
+    public function test(){
+        News::create(['news_type'=>'article',
+            'newspaper_id'=>9,
+            'category_id'=>4]);
+    }
 }
 
 

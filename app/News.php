@@ -13,7 +13,20 @@ class News extends Model
     protected $table="newses";
     protected $guarded = ['id', 'updated_at', 'created_at'];
     protected $hidden = ['article', 'updated_at', 'created_at'];
-
+    /*
+     * Accessors*/
+    public function getTagIdsAttribute($value)
+    {
+        if (env('SUBMIT_MODE')) {
+            $json = json_decode($value, true);
+            unset($json['16']);
+            if (empty($json)) return null;
+            return $json;
+        }
+        else{
+            return json_decode($value, true);
+        }
+    }
     /*
      * Relations*/
     public function category()
@@ -170,7 +183,6 @@ class News extends Model
         if(isset($params['keywords']) and $params['keywords']!="" and $params['keywords']!="null"){
 
             $keywords = array_filter(explode(' ', $params['keywords']));
-
 
             $sec_keywords = $keywords;
             $tags = Tag::where(function ($q) use ($sec_keywords){

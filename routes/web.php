@@ -224,6 +224,7 @@ $router->group(['prefix' => 'v1'], function ($app) use ($router) {
         $app->get('/mysql_json','TestController@mysql_json');
         $app->get('/redis','TestController@redis');
         $app->get('/agent','TestController@useragent');
+        $app->get('/test','TestController@test');
     });
 
 });
