@@ -1,18 +1,8 @@
 <?php
 namespace App\Console\Commands;
-use App\Employee;
-use App\Http\Controllers\DateTimeController;
-use App\Http\Controllers\HolidayController;
-use App\Http\Controllers\LoanController;
-use App\Http\Controllers\LoanScheduleController;
-use App\Loan;
-use App\LoanProduct;
-use App\LoanSchedule;
-use App\Member;
+
+
 use App\News;
-use App\SavingRspm;
-use App\Shamity;
-use App\TransferHistory;
 use App\User;
 use Carbon\Carbon;
 use Faker\Provider\Uuid;

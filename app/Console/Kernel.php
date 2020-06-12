@@ -27,6 +27,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('image:uploads')
             ->timezone('Asia/Dhaka')
-            ->everyMinute(); // every minutes
+            ->everyTenMinutes(); // every minutes
     }
 }
