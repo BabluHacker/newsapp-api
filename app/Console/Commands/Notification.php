@@ -80,9 +80,8 @@ class Notification extends Command
             return $res->getStatusCode();
 
         } catch (ClientException $exception){
-            $res = $exception->getResponse();
-            $this->info(json_encode($res));
-
+            $this->info($res->getStatusCode());
+            $this->info($res->getBody()->getContents());
         }
     }
 
