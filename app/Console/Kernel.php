@@ -14,7 +14,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\ImageUploads::class
+        Commands\ImageUploads::class,
+        Commands\Notification::class
     ];
 
     /**
@@ -25,8 +26,11 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('image:uploads')
+//        $schedule->command('image:uploads')
+//            ->timezone('Asia/Dhaka')
+//            ->everyTenMinutes(); // every minutes
+        $schedule->command('notification:create')
             ->timezone('Asia/Dhaka')
-            ->everyTenMinutes(); // every minutes
+            ->cron('5 9,14,19,21 * * *');
     }
 }
