@@ -57,10 +57,10 @@ class Notification extends Command
     }
 
     private function send_notification($news_id, $heading, $content){
-        $client = new Client(['base_uri' => 'https://onesignal.com/api/v1/notifications', 'timeout'  => 15.0, ]);
+        $client = new Client(['base_uri' => 'https://onesignal.com/', 'timeout'  => 15.0, ]);
 //        try {
 
-            $res = $client->request('POST', 'coronavirus/worldstat.php', [
+            $res = $client->request('POST', 'api/v1/notifications', [
                 'headers' => [
                     'Content-Type' => 'application/json; charset=utf-8',
                     'Authorization' => env('ONE_SIGNAL_API_KEY')
