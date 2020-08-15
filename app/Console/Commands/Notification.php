@@ -58,7 +58,7 @@ class Notification extends Command
 
     private function send_notification($news_id, $heading, $content){
         $client = new Client(['base_uri' => 'https://coronavirus-monitor.p.rapidapi.com/', 'timeout'  => 15.0, ]);
-        try {
+//        try {
 
             $res = $client->request('POST', 'coronavirus/worldstat.php', [
                 'headers' => [
@@ -79,10 +79,11 @@ class Notification extends Command
             ]);
             return $res->getStatusCode();
 
-        } catch (ClientException $exception){
-            $this->info($res->getStatusCode());
-            $this->info($res->getBody()->getContents());
-        }
+//        } catch (ClientException $exception){
+//            $res = $exception->getResponse();
+//            $this->info($res->getStatusCode());
+//            $this->info($res->getBody()->getContents());
+//        }
     }
 
 
