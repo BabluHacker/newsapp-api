@@ -81,7 +81,7 @@ class Notification extends Command
 
         } catch (ClientException $exception){
             $res = $exception->getResponse();
-            $this->info($res);
+            $this->info(json_encode($res));
 
         }
     }
