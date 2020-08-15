@@ -47,9 +47,12 @@ class Notification extends Command
     public function handle()
     {
         $news = News::orderBy('published_time', 'desc')->take(5)->get();
+        $this->info('Starting to send');
         foreach ($news as $news_single) {
-            $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 100));
+            $res = $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 100));
+            $this->info($res);
         }
+
 
     }
 
@@ -74,9 +77,12 @@ class Notification extends Command
                 ])
 
             ]);
+            return $res->getStatusCode();
 
         } catch (ClientException $exception){
             $res = $exception->getResponse();
+            $this->info($res);
+
         }
     }
 
