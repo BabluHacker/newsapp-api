@@ -57,7 +57,7 @@ class Notification extends Command
     }
 
     private function send_notification($news_id, $heading, $content){
-        $client = new Client(['base_uri' => 'https://coronavirus-monitor.p.rapidapi.com/', 'timeout'  => 15.0, ]);
+        $client = new Client(['base_uri' => 'https://onesignal.com/api/v1/notifications', 'timeout'  => 15.0, ]);
 //        try {
 
             $res = $client->request('POST', 'coronavirus/worldstat.php', [
