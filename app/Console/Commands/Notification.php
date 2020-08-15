@@ -52,20 +52,21 @@ class Notification extends Command
             $res = $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 100));
             $this->info($res);
         }
-
+//        $res = $this->send_notification(268416, 'বঙ্গবন্ধুকে নিয়ে প্রথম ভার্চুয়াল প্রদর্শনী শুরু', 'জাতীয় শোক দিবস পালন এবং জাতির পিতা বঙ্গবন্ধু শেখ মুজিবুর রহমানের জন্মশতবার্ষিকী উদযাপন উপলক্ষে শুক্রবার বঙ্গবন্ধুকে নিয়ে প্রথমবারের মতো ভার্চুয়াল আর্ট, ফটোগ্রাফি ও মাল্টিমিডিয়া প্রদর্শনী ‘ব্রেভ হার্ট’ শুরু হয়েছে। দেশের ৪২ প্রখ্যাত শিল্পীর কাজ নিয়ে গ্যালারি কসমস ');
+//        $this->info($res);
 
     }
 
     private function send_notification($news_id, $heading, $content){
         $client = new Client(['base_uri' => 'https://onesignal.com/', 'timeout'  => 15.0, ]);
-//        try {
+        try {
 
             $res = $client->request('POST', 'api/v1/notifications', [
                 'headers' => [
                     'Content-Type' => 'application/json; charset=utf-8',
                     'Authorization' => env('ONE_SIGNAL_API_KEY')
                 ],
-                'json' => json_encode([
+                'body' => json_encode([
                     'app_id' => env('ONE_SIGNAL_APP_ID'),
                     'included_segments'=> ["All"],
                     'data' => [ 'news_id' => $news_id],
@@ -79,11 +80,11 @@ class Notification extends Command
             ]);
             return $res->getStatusCode();
 
-//        } catch (ClientException $exception){
-//            $res = $exception->getResponse();
-//            $this->info($res->getStatusCode());
-//            $this->info($res->getBody()->getContents());
-//        }
+        } catch (ClientException $exception){
+            $res = $exception->getResponse();
+            $this->info($res->getStatusCode());
+            $this->info($res->getBody()->getContents());
+        }
     }
 
 
