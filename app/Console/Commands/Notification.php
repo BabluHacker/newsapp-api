@@ -62,7 +62,7 @@ class Notification extends Command
                     'Content-Type' => 'application/json; charset=utf-8',
                     'Authorization' => env('ONE_SIGNAL_API_KEY')
                 ],
-                'json' => [
+                'json' => json_encode([
                     'app_id' => env('ONE_SIGNAL_APP_ID'),
                     'included_segments'=> ["All"],
                     'data' => [ 'news_id' => $news_id],
@@ -71,7 +71,7 @@ class Notification extends Command
                     'android_accent_color' => 'FF3A89FF',
                     'huawei_accent_color' => 'FF3A89FF'
 
-                ]
+                ])
 
             ]);
 
