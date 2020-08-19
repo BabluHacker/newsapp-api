@@ -67,7 +67,7 @@ class Notification extends Command
                     'Authorization' => env('ONE_SIGNAL_API_KEY')
                 ],
                 'body' => json_encode([
-                    'app_id' => env('ONE_SIGNAL_APP_ID'),
+                    'app_id' => "70759d02-334a-4146-970a-f838033b8ab6",
                     'included_segments'=> ["All"],
                     'data' => [ 'news_id' => $news_id],
                     'headings' => ['en' => $heading],
