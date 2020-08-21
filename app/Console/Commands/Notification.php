@@ -49,7 +49,7 @@ class Notification extends Command
         $news = News::orderBy('published_time', 'desc')->take(5)->get();
         $this->info('Starting to send');
         foreach ($news as $news_single) {
-            $res = $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 100));
+            $res = $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 300));
             $this->info($res);
         }
 //        $res = $this->send_notification(268416, 'বঙ্গবন্ধুকে নিয়ে প্রথম ভার্চুয়াল প্রদর্শনী শুরু', 'জাতীয় শোক দিবস পালন এবং জাতির পিতা বঙ্গবন্ধু শেখ মুজিবুর রহমানের জন্মশতবার্ষিকী উদযাপন উপলক্ষে শুক্রবার বঙ্গবন্ধুকে নিয়ে প্রথমবারের মতো ভার্চুয়াল আর্ট, ফটোগ্রাফি ও মাল্টিমিডিয়া প্রদর্শনী ‘ব্রেভ হার্ট’ শুরু হয়েছে। দেশের ৪২ প্রখ্যাত শিল্পীর কাজ নিয়ে গ্যালারি কসমস ');
