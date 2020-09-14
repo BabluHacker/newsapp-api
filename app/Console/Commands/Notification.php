@@ -46,7 +46,8 @@ class Notification extends Command
      */
     public function handle()
     {
-        $news = News::orderBy('published_time', 'desc')->take(5)->get();
+        $news = News::where('lang', '=', 'bangla')
+            ->orderBy('published_time', 'desc')->take(5)->get();
         $this->info('Starting to send');
         foreach ($news as $news_single) {
             $res = $this->send_notification($news_single['id'], $news_single['headline'], substr($news_single['summary'], 0, 300));
